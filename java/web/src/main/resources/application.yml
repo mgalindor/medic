@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: mdcUser
+  data:
+    mongodb:
+      uri: mongodb://mk:mk$123@mgdb/monox
+  jackson:
+    date-format: dd-MM-yyyy HH:mm:ss
+
+server:
+  port: 8088
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://eureka.peer.one:8050/eureka,http://http://eureka.peer.two:8060/eureka
+    healthcheck:
+      enabled: true
+  instance:
+    preferIpAddress: true
+
+

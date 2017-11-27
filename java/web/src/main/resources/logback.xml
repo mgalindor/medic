@@ -1,0 +1,61 @@
+<configuration>
+	<appender name="controller" class="ch.qos.logback.core.FileAppender">
+		<file>target/loggs/controller.log</file>
+		<encoder>
+			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="app" class="ch.qos.logback.core.FileAppender">
+		<file>target/loggs/app.log</file>
+		<encoder>
+			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="data" class="ch.qos.logback.core.FileAppender">
+		<file>target/loggs/data.log</file>
+		<encoder>
+			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="infra" class="ch.qos.logback.core.FileAppender">
+		<file>target/loggs/infra.log</file>
+		<encoder>
+			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="exception" class="ch.qos.logback.core.FileAppender">
+		<file>target/loggs/exception.log</file>
+		<encoder>
+			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="rest" level="DEBUG"   >
+		<appender-ref ref="controller" />
+	</logger>
+	<logger name="com.mk.mnx" level="DEBUG">
+		<appender-ref ref="app" />
+	</logger>
+	<logger name="infra" level="DEBUG" >
+		<appender-ref ref="infra" />
+	</logger>
+	<logger name="org.springframework" level="ERROR" >
+		<appender-ref ref="infra" />
+	</logger>
+	<logger name="org.codehaus" level="ERROR" >
+		<appender-ref ref="infra" />
+	</logger>
+	<logger name="org.springframework.data" level="ERROR" additivity="false">
+		<appender-ref ref="data" />
+	</logger>
+	<logger name="exception" level="ERROR"   >
+		<appender-ref ref="exception" />
+	</logger>
+	
+	
+
+</configuration>

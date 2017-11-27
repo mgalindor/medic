@@ -1,0 +1,163 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <url>http://maven.apache.org</url>
+  
+  <parent>
+      <groupId>com.mk.mnx.mdc</groupId>
+      <artifactId>mdc</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>com.mk.mnx.mdc</groupId>
+  <artifactId>web</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>mdc Web</name>
+
+	<properties>
+		<!--project.build.sourceEncoding>UTF-8</project.build.sourceEncoding-->
+    <docker.verbose>true</docker.verbose>
+	</properties>
+
+  <dependencies>
+    <dependency>
+       <groupId>com.mk.mnx.mdc</groupId>
+  <artifactId>infra</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+    </dependency> 
+
+    <dependency>
+        <groupId>com.mk.mnx.mdc</groupId>
+  <artifactId>model</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+    </dependency> 
+
+    <dependency>
+        <!-- Setup Spring Boot -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter</artifactId>
+        <version>${spring.boot.version}</version>
+    </dependency>
+ 
+    <dependency>
+        <!-- Setup Spring MVC & REST, use Embedded Tomcat -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <version>${spring.boot.version}</version>
+    </dependency>
+
+    <dependency>
+        <!-- Setup Spring Data link Mongo -->
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        <version>${spring.boot.version}</version>
+    </dependency>
+
+	<dependency>
+		<!-- Setup Spring Eureka -->
+	    <groupId>org.springframework.cloud</groupId>
+	    <artifactId>spring-cloud-starter-eureka</artifactId>
+	    <version>${spring.cloud.version}</version>
+	</dependency>
+  <dependency>
+    <!-- Setup eneable healthcheck -->
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+    <version>${spring.boot.version}</version>
+  </dependency>
+  
+  <!-- Set up security token-->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${session.token.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjweaver</artifactId>
+			<version>1.8.12</version>
+		</dependency>
+
+    <dependency>
+      <groupId>uk.co.jemos.podam</groupId>
+      <artifactId>podam</artifactId>
+      <version>7.0.5.RELEASE</version>
+    </dependency>
+
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <!-- Empaqueta la aplicacion en un solo jar -->
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <configuration>
+          <mainClass>com.mk.mnx.StartUpService</mainClass>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+            <configuration>
+              <classifier>spring-boot</classifier>
+              <mainClass>com.mk.mnx.StartUpService</mainClass>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- Permite desplegar y administrar una imagen del proyecto en docker -->
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>0.23.0</version>
+        <configuration>
+          <dockerHost>tcp://docker:4243</dockerHost>
+          <images>
+            <image>
+              <name>mdc/user</name>
+              <alias>mdc/user</alias>
+              <build>
+                <dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
+                <!-- Permite copiar el archivo generado spring-boot-maven-plugin para ser desplegado en el contenedor-->
+                <assembly>
+                  <mode>dir</mode>
+                  <inline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+                    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+                    <id>maven</id>
+                    <files>
+                      <file>
+                        <source>target/${project.build.finalName}-spring-boot.jar</source>
+                      </file>
+                    </files>
+                  </inline>
+                </assembly>
+              </build>
+              <run>
+                <namingStrategy>alias</namingStrategy>
+                <ports>
+                  <port>9088:8088</port>
+                </ports>
+                <extraHosts>mgdb:192.168.33.11</extraHosts>
+                <extraHosts>eureka.peer.one:192.168.33.10</extraHosts>
+              </run>
+            </image>
+          </images>
+        </configuration>
+      </plugin>
+    </plugins>
+
+
+  </build>
+ 
+</project>
