@@ -6,6 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mk.mnx.infr.model.BaseModel;
+import com.mk.mnx.mdc.model.states.EnuSexo;
 
 @Document(collection = "pacientes")
 public class Paciente extends BaseModel{
@@ -17,49 +18,68 @@ public class Paciente extends BaseModel{
 	
 	private Date fecNacimiento;
 	
-	private Date creacion;
+	private String diagnostico;
 	
-	private String idDoctorCreacion;
+	private EnuSexo sexo;
 	
-	public Contacto getContacto() {
-		return contacto;
-	}
+	private HistoriaClinica historiaClinica;
 	
-	public void setContacto(Contacto contacto) {
-		this.contacto = contacto;
-	}
-	
+	private DatosAuditoria datosAuditoria;
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	public Date getCreacion() {
-		return creacion;
+	public Contacto getContacto() {
+		return contacto;
 	}
 
-	public void setCreacion(Date creacion) {
-		this.creacion = creacion;
+	public void setContacto(Contacto contacto) {
+		this.contacto = contacto;
 	}
 
-	public String getIdDoctorCreacion() {
-		return idDoctorCreacion;
-	}
-
-	public void setIdDoctorCreacion(String idDoctorCreacion) {
-		this.idDoctorCreacion = idDoctorCreacion;
-	}
-	
 	public Date getFecNacimiento() {
 		return fecNacimiento;
 	}
-	
+
 	public void setFecNacimiento(Date fecNacimiento) {
 		this.fecNacimiento = fecNacimiento;
 	}
-	
 
+	public String getDiagnostico() {
+		return diagnostico;
+	}
+
+	public void setDiagnostico(String diagnostico) {
+		this.diagnostico = diagnostico;
+	}
+
+	public EnuSexo getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(EnuSexo sexo) {
+		this.sexo = sexo;
+	}
+
+	public HistoriaClinica getHistoriaClinica() {
+		return historiaClinica;
+	}
+
+	public void setHistoriaClinica(HistoriaClinica historiaClinica) {
+		this.historiaClinica = historiaClinica;
+	}
+
+	public DatosAuditoria getDatosAuditoria() {
+		return datosAuditoria;
+	}
+
+	public void setDatosAuditoria(DatosAuditoria datosAuditoria) {
+		this.datosAuditoria = datosAuditoria;
+	}
+	
 }

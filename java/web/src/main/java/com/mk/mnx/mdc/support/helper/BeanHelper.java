@@ -2,7 +2,10 @@ package com.mk.mnx.mdc.support.helper;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javax.annotation.PostConstruct;
+
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -15,6 +18,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class BeanHelper extends BeanUtilsBean {
 
+	
+	BCryptPasswordEncoder passwordEncoder;
+	
+	@PostConstruct
+	public void init() {
+		passwordEncoder = new BCryptPasswordEncoder();
+	}
+	
 	@Override
     public void copyProperty(Object dest, String name, Object value)
             throws IllegalAccessException, InvocationTargetException {
@@ -22,5 +33,14 @@ public class BeanHelper extends BeanUtilsBean {
         	super.copyProperty(dest, name, value);
         }
     }
+	
+	public String encode (String in) {
+		return passwordEncoder.encode(in);
+	}
+	
+	public boolean matchesPassword(String encodedPassword , String clair) {
+		return passwordEncoder.matches(clair, encodedPassword);
+	}
+	
 	
 }

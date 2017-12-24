@@ -6,16 +6,21 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import com.mk.mnx.infr.constants.CommonConstants;
+import com.mk.mnx.infr.exception.HttpCodeException;
 import com.mk.mnx.infr.service.BaseService;
 import com.mk.mnx.mdc.model.domain.Usuario;
-import com.mk.mnx.mdc.model.states.MDCRole;
+import com.mk.mnx.mdc.model.states.EnuRole;
+import com.mk.mnx.mdc.sstk.model.TokenResponse;
 import com.mk.mnx.mdc.sstk.repository.UserRepository;
+import com.mk.mnx.mdc.support.helper.BeanHelper;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,63 +30,94 @@ public class SessionTokenService extends BaseService {
 
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired
+	private BeanHelper beanHelper; 
 
-	public String creaSessionToken(String userName, String password) {
+	public TokenResponse creaSessionToken(String userName, String password) throws HttpCodeException {
 		logger.debug("USer [{}] passs [{}]",userName,password);
+		TokenResponse response = null;
 		Usuario u = userRepository.findUserByUserName(userName);
-		String token="";
 		if (u != null) {
-			String pass= DigestUtils.md5DigestAsHex(password.getBytes());
-			
-			logger.debug("md5 {}",pass);
-			
-			if (u.getPassword().equals(pass)) {
-				if(u.getToken() == null) {
-					String t = generateToken(u);
-					token = t;
-				}
-				
-				else if(u.getToken() != null) {
-					try {
-						Jwts.parser()
-						  .setSigningKey(CommonConstants.TOKEN_PASS)
-						  .parseClaimsJws(u.getToken()).getBody().getSubject();
-						token = u.getToken();
-					}
-					catch (ExpiredJwtException e) {
-						String t = generateToken(u);
-						token = t;
-					}catch(Exception e) {
-						logger.error("Error al validar token",e);
-					}
-				}
+			if (beanHelper.matchesPassword(u.getPassword() ,  password)) {
+				response = new TokenResponse();
+				response.setUsuario(u);
+				response.setToken(generateToken (u));
+				response.setRefreshToken(generateRefreshToken(u));
 			}
+			else {
+				throw new HttpCodeException(HttpServletResponse.SC_BAD_REQUEST);
+			}
+		}else {
+			throw new HttpCodeException(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		return token;
+		return response;
 	}
 	
-	private Date generateExpiration() {
+	
+	public TokenResponse creaRefreshToken( String refreshToken ) throws HttpCodeException {
+		TokenResponse response = null;
+	
+		try {
+			Claims c = Jwts.parser()
+			  .setSigningKey(CommonConstants.TOKEN_PASS)
+			  .parseClaimsJws(refreshToken).getBody();
+			
+			String user = c.getSubject();
+			List<EnuRole> roles = (List<EnuRole>) c.get(CommonConstants.TOKEN_ROLES);
+			
+
+			String tokenType =  (String) c.get(CommonConstants.TOKEN_TYPE);
+			if(tokenType.equals(CommonConstants.TOKEN_TYPE_REF)) {
+				throw new HttpCodeException(HttpServletResponse.SC_FORBIDDEN);
+			}
+			
+			Usuario u = new Usuario();
+			u.setNombre(user);
+			u.setRoles(roles);
+		
+			response = new TokenResponse();
+			response.setUsuario(u);
+			response.setToken(generateToken (u));
+			response.setRefreshToken(generateRefreshToken(u));
+		}catch(ExpiredJwtException e) {
+			throw new HttpCodeException(HttpServletResponse.SC_FORBIDDEN, e);
+		}catch(Exception e) {
+			throw new HttpCodeException(HttpServletResponse.SC_BAD_REQUEST);
+		}
+		return response;
+	}
+	
+	private Date generateExpiration(int expiration) {
 		Calendar cal = GregorianCalendar.getInstance();
 		cal.setTime(new Date());
-		cal.add(Calendar.DATE, CommonConstants.NUMBER_OF_DAYS_TOKEN_LIVE);
+		cal.add(Calendar.DATE, expiration );
 		return cal.getTime();
 	}
 	
-	private String generateTokenJWT(String userName, List<MDCRole> roles) {
+	private String generateTokenJWT(String userName, List<EnuRole> roles) {
 		HashMap<String, Object> m = new HashMap<String, Object>();
 		m.put(CommonConstants.TOKEN_ROLES, roles);
+		m.put(CommonConstants.TOKEN_TYPE, CommonConstants.TOKEN_TYPE_GRANT);
 		String JWT = Jwts.builder().setSubject(userName).setClaims(m)
-				.setExpiration(generateExpiration())
+				.setExpiration(generateExpiration(CommonConstants.NUMBER_OF_DAYS_TOKEN_LIVE))
 				.signWith(SignatureAlgorithm.HS512, CommonConstants.TOKEN_PASS).compact();
 		return JWT;
 	}
 	
 	private String generateToken(Usuario u) {
 		String t = generateTokenJWT(u.getNombre(),u.getRoles());
-		u.setToken(t);
-		userRepository.save(u);
 		return t;
 	}
 	
+	private String generateRefreshToken(Usuario u) {
+		HashMap<String, Object> m = new HashMap<String, Object>();
+		m.put(CommonConstants.TOKEN_ROLES, u.getRoles());
+		m.put(CommonConstants.TOKEN_TYPE, CommonConstants.TOKEN_TYPE_REF);		
+		String JWT = Jwts.builder().setSubject(u.getNombre()).setClaims(m)
+				.setExpiration(generateExpiration(CommonConstants.NUMBER_OF_DAYS_TOKEN_RF_LIVE))
+				.signWith(SignatureAlgorithm.HS512, CommonConstants.TOKEN_PASS).compact();
+		return JWT;
+	}
 
 }

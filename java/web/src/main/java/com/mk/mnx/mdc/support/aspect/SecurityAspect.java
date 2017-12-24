@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.mk.mnx.infr.constants.CommonConstants;
 import com.mk.mnx.infr.controller.BaseRestController;
-import com.mk.mnx.mdc.model.states.MDCRole;
+import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.support.annotation.AccessValidation;
 
 import io.jsonwebtoken.Jwts;
@@ -47,7 +47,7 @@ public class SecurityAspect {
 				try {
 					String user = Jwts.parser().setSigningKey(CommonConstants.TOKEN_PASS).parseClaimsJws(tokem).getBody()
 							.getSubject();
-					List<MDCRole> roles = (List<MDCRole>) Jwts.parser().setSigningKey(CommonConstants.TOKEN_PASS).parseClaimsJws(tokem).getBody().get(CommonConstants.TOKEN_ROLES);
+					List<EnuRole> roles = (List<EnuRole>) Jwts.parser().setSigningKey(CommonConstants.TOKEN_PASS).parseClaimsJws(tokem).getBody().get(CommonConstants.TOKEN_ROLES);
 					
 					if  (!CollectionUtils.isSubCollection(Arrays.asList(va.roles()), roles))
 					{

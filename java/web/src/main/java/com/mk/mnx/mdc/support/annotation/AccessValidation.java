@@ -6,7 +6,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import com.mk.mnx.mdc.model.states.MDCRole;
+import com.mk.mnx.mdc.model.states.EnuRole;
 
 @Retention(RUNTIME)
 @Target(METHOD)
@@ -18,6 +18,6 @@ public @interface AccessValidation {
 	 * Roles que debe tener el usuario para acceder
 	 * @return
 	 */
-	MDCRole[] roles() default {MDCRole.USER};
+	EnuRole[] roles() default {EnuRole.USER};
 	
 }

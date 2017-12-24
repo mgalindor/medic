@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.mk.mnx.infr.constants.CommonConstants;
+import com.mk.mnx.infr.exception.HttpCodeException;
 
 public abstract class BaseRestController {
 	
@@ -30,6 +31,14 @@ public abstract class BaseRestController {
     	//loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
     	loggerException.error("Error:",ex);
     	resp.sendError(HttpServletResponse.SC_CONFLICT,ex.getMessage());
+
+    }
+    
+    @ExceptionHandler(HttpCodeException.class)
+    public void handleHttpError(HttpServletRequest req, HttpServletResponse resp , HttpCodeException ex) throws IOException {
+    	//loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
+    	loggerException.error("Error:",ex);
+    	resp.sendError(ex.getHttpCode(),ex.getMessage());
 
     }
 

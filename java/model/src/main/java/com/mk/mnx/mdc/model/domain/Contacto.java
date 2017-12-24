@@ -15,6 +15,8 @@ public class Contacto extends BaseModel {
 	private String tel;
 	
 	private String cel;
+	
+	private String nombreCompleto;
 
 	public String getNombre() {
 		return nombre;
@@ -62,6 +64,14 @@ public class Contacto extends BaseModel {
 
 	public void setCel(String cel) {
 		this.cel = cel;
+	}
+
+	public String getNombreCompleto() {
+		return nombreCompleto;
+	}
+
+	public void setNombreCompleto(String nombreCompleto) {
+		this.nombreCompleto = nombreCompleto;
 	}
 	
 	

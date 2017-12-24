@@ -9,7 +9,13 @@ public interface CommonConstants {
 	
 	String TOKEN_PASS="mnk$123";
 	Integer NUMBER_OF_DAYS_TOKEN_LIVE=1;
+	Integer NUMBER_OF_DAYS_TOKEN_RF_LIVE=2;
 	String TOKEN_ROLES="roles";
+	
+	String TOKEN_TYPE = "ttyp";
+	String TOKEN_TYPE_GRANT = "grant";
+	String TOKEN_TYPE_REF = "ref";
+	
 	
 	
 	

@@ -1,6 +1,5 @@
 package com.mk.mnx.mdc.model.domain;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -8,7 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mk.mnx.infr.model.BaseModel;
-import com.mk.mnx.mdc.model.states.MDCRole;
+import com.mk.mnx.mdc.model.states.EnuRole;
 
 @Document(collection = "usuarios")
 public class Usuario extends BaseModel {
@@ -21,15 +20,15 @@ public class Usuario extends BaseModel {
 	
 	private String password;
 	
-	private Date creacion;
-	
 	private Boolean isConnected;
-
-	private String token;
 	
-	private List<MDCRole> roles;
+	private List<EnuRole> roles;
 	
-	private boolean enable;
+	private List<FootPrint> modificado;
+	
+	private DatosDoctor datosDoctor;
+	
+	private DatosAuditoria datosAuditoria;
 
 	public String getId() {
 		return id;
@@ -55,14 +54,6 @@ public class Usuario extends BaseModel {
 		this.password = password;
 	}
 
-	public Date getCreacion() {
-		return creacion;
-	}
-
-	public void setCreacion(Date creacion) {
-		this.creacion = creacion;
-	}
-
 	public Boolean getIsConnected() {
 		return isConnected;
 	}
@@ -71,30 +62,37 @@ public class Usuario extends BaseModel {
 		this.isConnected = isConnected;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public List<MDCRole> getRoles() {
+	public List<EnuRole> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<MDCRole> roles) {
+	public void setRoles(List<EnuRole> roles) {
 		this.roles = roles;
 	}
 
-	public boolean isEnable() {
-		return enable;
+	public List<FootPrint> getModificado() {
+		return modificado;
 	}
 
-	public void setEnable(boolean enable) {
-		this.enable = enable;
+	public void setModificado(List<FootPrint> modificado) {
+		this.modificado = modificado;
 	}
 
-	
+	public DatosDoctor getDatosDoctor() {
+		return datosDoctor;
+	}
+
+	public void setDatosDoctor(DatosDoctor datosDoctor) {
+		this.datosDoctor = datosDoctor;
+	}
+
+	public DatosAuditoria getDatosAuditoria() {
+		return datosAuditoria;
+	}
+
+	public void setDatosAuditoria(DatosAuditoria datosAuditoria) {
+		this.datosAuditoria = datosAuditoria;
+	}
+
 	
 }
