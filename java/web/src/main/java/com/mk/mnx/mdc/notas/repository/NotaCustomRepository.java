@@ -4,6 +4,6 @@ import com.mk.mnx.mdc.model.domain.Nota;
 
 public interface NotaCustomRepository {
 	
-	public Nota findByIndex(String idUsuario ,Integer index);
+	public Nota getNotaOfUserByIndex(String idUsuario ,Integer index);
 
 }

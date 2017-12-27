@@ -28,8 +28,8 @@ public class SecurityAspect {
 	protected final Logger logger = LoggerFactory.getLogger(CommonConstants.LOGGER_INFRA);
 
 	@SuppressWarnings("unchecked")
-	@Around("execution(public * *(..)) && this(com.mk.mnx.infr.controller.BaseRestController) "
-			+ "&& @target(org.springframework.web.bind.annotation.RestController) && @annotation(com.mk.mnx.mdc.annotation.AccessValidation)")
+	@Around("execution(public * *(..)) && this(com.mk.mnx.infr.controller.BaseRestController) "   
+			+ "&& @target(org.springframework.web.bind.annotation.RestController) && @annotation(com.mk.mnx.mdc.support.annotation.AccessValidation)")
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
 		logger.debug("Acces validation");
 		BaseRestController ctl = (BaseRestController) joinPoint.getTarget();		

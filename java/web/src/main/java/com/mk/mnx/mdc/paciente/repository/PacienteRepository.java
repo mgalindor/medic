@@ -9,7 +9,7 @@ import com.mk.mnx.mdc.model.domain.Paciente;
 
 public interface PacienteRepository extends MongoRepository<Paciente, String> {
 	
-	@Query("{contacto.nombreCompleto : /?0/ }")
+	@Query("{contacto.nombreCompleto : {$regex: ?0 } }")
 	List<Paciente> findLikeNombre(String nombre);
 
 }

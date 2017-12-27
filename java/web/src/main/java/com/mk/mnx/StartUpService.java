@@ -10,6 +10,5 @@ public class StartUpService {
 
 	public static void main(String[] args) {
 		SpringApplication.run(StartUpService.class, args);
-		// Esta bien chido este pedo
 	}
 }

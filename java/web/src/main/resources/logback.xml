@@ -1,34 +1,34 @@
 <configuration>
 	<appender name="controller" class="ch.qos.logback.core.FileAppender">
-		<file>target/loggs/controller.log</file>
+		<file>logers/controller.log</file>
 		<encoder>
 			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
 		</encoder>
 	</appender>
 
 	<appender name="app" class="ch.qos.logback.core.FileAppender">
-		<file>target/loggs/app.log</file>
+		<file>logers/app.log</file>
 		<encoder>
 			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
 		</encoder>
 	</appender>
 	
 	<appender name="data" class="ch.qos.logback.core.FileAppender">
-		<file>target/loggs/data.log</file>
+		<file>logers/data.log</file>
 		<encoder>
 			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
 		</encoder>
 	</appender>
 	
 	<appender name="infra" class="ch.qos.logback.core.FileAppender">
-		<file>target/loggs/infra.log</file>
+		<file>logers/infra.log</file>
 		<encoder>
 			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
 		</encoder>
 	</appender>
 	
 	<appender name="exception" class="ch.qos.logback.core.FileAppender">
-		<file>target/loggs/exception.log</file>
+		<file>logers/exception.log</file>
 		<encoder>
 			<pattern>%date - [%6.6level] [%30mdc{stkn}]-[%30.30C{0}:%line]: %msg%n</pattern>
 		</encoder>

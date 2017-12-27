@@ -13,9 +13,9 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 	@Query("{nombre :'?0'}")
 	Usuario findByNombre(String nombre);
 	
-	@Query("{nombre :'/?0/'}")
+	@Query("{nombre : {$regex: ?0 }}")
 	List<Usuario> findLikeNombre(String nombre);
 
-	@Query("{datosDoctor.contacto.nombreCompleto : /?0/ , roles : { $in : ['MEDICO'] } } ")
+	@Query("{datosDoctor.contacto.nombreCompleto : {$regex: ?0 } , roles : { $in : ['MEDICO'] } } ")
 	List<Paciente> findLikeDoctorNombre(String nombre);
 }

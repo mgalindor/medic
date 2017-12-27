@@ -5,14 +5,16 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.stereotype.Repository;
 
 import com.mk.mnx.infr.repository.BaseCustomRepository;
 import com.mk.mnx.mdc.model.domain.Nota;
 import com.mk.mnx.mdc.notas.repository.NotaCustomRepository;
 
+@Repository
 public class NotaCustomRepositoryImpl extends BaseCustomRepository implements NotaCustomRepository{
 
-	public Nota findByIndex(String idUsuario, Integer index) {
+	public Nota getNotaOfUserByIndex(String idUsuario, Integer index) {
 		Criteria criteria = Criteria.where("_id").is(idUsuario);
 		Query query = Query.query(criteria);
 		query.limit(1);
