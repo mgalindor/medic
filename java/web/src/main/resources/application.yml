@@ -8,7 +8,7 @@ spring:
     date-format: dd-MM-yyyy HH:mm:ss
 
 server:
-  port: 8088
+  port: ${PORT:8080}
 
 eureka:
   client:
