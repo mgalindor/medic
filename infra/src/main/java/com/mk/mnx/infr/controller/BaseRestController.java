@@ -35,7 +35,7 @@ public abstract class BaseRestController {
     
     @ExceptionHandler
     public void handleError(HttpServletRequest req, HttpServletResponse resp , Exception ex) throws IOException {
-    	//loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
+    	loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
     	loggerException.error("Error:",ex);
     	resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,ex.getMessage());
 
@@ -43,7 +43,7 @@ public abstract class BaseRestController {
     
     @ExceptionHandler(HttpCodeException.class)
     public void handleHttpError(HttpServletRequest req, HttpServletResponse resp , HttpCodeException ex) throws IOException {
-    	//loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
+    	loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
     	loggerException.error("HTTP Error:",ex);
     	resp.sendError(ex.getHttpCode(),ex.getMessage());
 

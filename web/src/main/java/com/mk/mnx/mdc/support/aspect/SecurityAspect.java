@@ -12,6 +12,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -38,7 +39,8 @@ public class SecurityAspect {
 		logger.debug("Acces validation");
 		BaseRestController ctl = (BaseRestController) joinPoint.getTarget();		
 		Class<? extends Object> c = joinPoint.getTarget().getClass();
-		Method m = c.getMethod(joinPoint.getSignature().getName());
+		MethodSignature methodSignature = (MethodSignature) joinPoint.getStaticPart().getSignature();
+        Method m = methodSignature.getMethod();
 		AccessValidation va = m.getAnnotation(AccessValidation.class);
 
 		//Realiza la validacion del token y roles
