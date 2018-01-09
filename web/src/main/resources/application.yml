@@ -3,7 +3,7 @@ spring:
     name: mdcUser
   data:
     mongodb:
-      uri: mongodb://medic:Pa$$word@ds163656.mlab.com:63656/medic
+      uri:mongodb://medic:Pa$$wor@ds163656.mlab.com:63656/medic
   jackson:
     #date-format: dd-MM-yyyy HH:mm:ss
     date-format=com.fasterxml.jackson.databind.util.ISO8601DateFormat
