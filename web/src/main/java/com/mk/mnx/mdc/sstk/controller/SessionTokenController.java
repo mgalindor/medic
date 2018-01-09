@@ -30,7 +30,7 @@ public class SessionTokenController extends BaseRestController {
 	}
 	
 	@PostMapping("refresh")
-	@AccessValidation(roles= {EnuRole.USER})
+	//@AccessValidation(roles= {EnuRole.USER})
 	public TokenResponse refreshToken(@RequestHeader(CommonConstants.SESSION_HTTP_REFRESH_HEADER) String  refreshHeader) throws HttpCodeException {
 		TokenResponse r = sessionTokenService.creaRefreshToken(refreshHeader);
 		return r;
