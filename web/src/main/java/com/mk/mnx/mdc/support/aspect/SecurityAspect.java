@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -16,9 +18,11 @@ import org.springframework.stereotype.Component;
 
 import com.mk.mnx.infr.constants.CommonConstants;
 import com.mk.mnx.infr.controller.BaseRestController;
+import com.mk.mnx.infr.exception.HttpCodeException;
 import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.support.annotation.AccessValidation;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
 @Aspect
@@ -30,7 +34,7 @@ public class SecurityAspect {
 	@SuppressWarnings("unchecked")
 	@Around("execution(public * *(..)) && this(com.mk.mnx.infr.controller.BaseRestController) "   
 			+ "&& @target(org.springframework.web.bind.annotation.RestController) && @annotation(com.mk.mnx.mdc.support.annotation.AccessValidation)")
-	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable {
+	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable    {
 		logger.debug("Acces validation");
 		BaseRestController ctl = (BaseRestController) joinPoint.getTarget();		
 		Class<? extends Object> c = joinPoint.getTarget().getClass();
@@ -40,14 +44,15 @@ public class SecurityAspect {
 		//Realiza la validacion del token y roles
 		if(va.enabled()) {
 			HttpServletRequest httpRequest = ctl.getRequest();
-			String tokem = httpRequest.getHeader(CommonConstants.SESSION_HTTP_HEADER);
-			if (tokem == null) {
-				throw new SecurityException("Autentication is necesary");
+			String header = httpRequest.getHeader(CommonConstants.SESSION_HTTP_HEADER);
+			if (header == null) {
+				throw new HttpCodeException(HttpServletResponse.SC_UNAUTHORIZED,"Autentication is necesary");
 			} else {
 				try {
-					String user = Jwts.parser().setSigningKey(CommonConstants.TOKEN_PASS).parseClaimsJws(tokem).getBody()
-							.getSubject();
-					List<EnuRole> roles = (List<EnuRole>) Jwts.parser().setSigningKey(CommonConstants.TOKEN_PASS).parseClaimsJws(tokem).getBody().get(CommonConstants.TOKEN_ROLES);
+					String token = header.replaceFirst(CommonConstants.SESSION_HTTP_HEADER_PREFIX, "");
+					Claims claimToken = Jwts.parser().setSigningKey(CommonConstants.TOKEN_PASS).parseClaimsJws(token).getBody();
+					String user = claimToken.getSubject();
+					List<EnuRole> roles = (List<EnuRole>) claimToken.get(CommonConstants.TOKEN_ROLES);
 					
 					if  (!CollectionUtils.isSubCollection(Arrays.asList(va.roles()), roles))
 					{
@@ -57,13 +62,12 @@ public class SecurityAspect {
 					}
 					
 					logger.debug("User [{}]", user);
-					httpRequest.setAttribute(CommonConstants.SESSION_USER, user);
+					//httpRequest.setAttribute(CommonConstants.SESSION_USER, user);
+					FieldUtils.writeField(ctl, "user", user, true);
 					return joinPoint.proceed();
-					
-					
 				} catch (Exception e) {
 					logger.error("Error al validar el token ", e);
-					throw new SecurityException("Autentication is not valid");
+					throw new HttpCodeException(HttpServletResponse.SC_FORBIDDEN,"Autentication is not valid");
 				}
 			}
 		}

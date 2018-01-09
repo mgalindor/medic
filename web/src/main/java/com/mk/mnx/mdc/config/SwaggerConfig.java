@@ -31,6 +31,7 @@ public class SwaggerConfig {
 	    return or(
 	        ant("/usuario/**"),
 	        ant("/paciente/**"),
+	        ant("/session/**"),
 	        ant("/nota/**") );
 	  }
 }

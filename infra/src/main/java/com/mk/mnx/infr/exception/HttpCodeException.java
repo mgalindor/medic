@@ -1,13 +1,16 @@
 package com.mk.mnx.infr.exception;
 
-public class HttpCodeException  extends Exception {
+import java.util.List;
+
+public class HttpCodeException  extends RuntimeException {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5792753491292099178L;
-	int httpCode;
-
+	private int httpCode;
+	private List<String> messages ;
+	
 	public HttpCodeException(int httpCode) {
 		super();
 		this.httpCode = httpCode;
@@ -16,6 +19,12 @@ public class HttpCodeException  extends Exception {
 	public HttpCodeException(int httpCode , String message) {
 		super(message);
 		this.httpCode = httpCode;
+	}
+	
+	public HttpCodeException(int httpCode , String message, List<String> messages) {
+		super(message);
+		this.httpCode = httpCode;
+		this.messages = messages;
 	}
 	
 	public HttpCodeException(int httpCode , Throwable t) {
@@ -32,4 +41,7 @@ public class HttpCodeException  extends Exception {
 		return httpCode;
 	}
 	
+	public List<String> getMessages() {
+		return messages;
+	}
 }

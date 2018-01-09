@@ -22,28 +22,31 @@ public abstract class BaseRestController {
     @Autowired
 	private HttpServletRequest request;
    
+    private String user;
+    
     protected String getUser() {	
-		return (String) request.getAttribute(CommonConstants.SESSION_USER);
+		//return (String) request.getAttribute(CommonConstants.SESSION_USER);
+    	return user;
 	}
     
-    @ExceptionHandler(Exception.class)
+    public HttpServletRequest getRequest() {
+		return request;
+	}
+    
+    @ExceptionHandler
     public void handleError(HttpServletRequest req, HttpServletResponse resp , Exception ex) throws IOException {
     	//loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
     	loggerException.error("Error:",ex);
-    	resp.sendError(HttpServletResponse.SC_CONFLICT,ex.getMessage());
+    	resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,ex.getMessage());
 
     }
     
     @ExceptionHandler(HttpCodeException.class)
     public void handleHttpError(HttpServletRequest req, HttpServletResponse resp , HttpCodeException ex) throws IOException {
     	//loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
-    	loggerException.error("Error:",ex);
+    	loggerException.error("HTTP Error:",ex);
     	resp.sendError(ex.getHttpCode(),ex.getMessage());
 
     }
-
-    public HttpServletRequest getRequest() {
-		return request;
-	}
     
 }

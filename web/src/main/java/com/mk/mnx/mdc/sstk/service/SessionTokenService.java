@@ -55,9 +55,9 @@ public class SessionTokenService extends BaseService {
 	}
 	
 	
-	public TokenResponse creaRefreshToken( String refreshToken ) throws HttpCodeException {
+	public TokenResponse creaRefreshToken( String refreshHeader ) throws HttpCodeException {
 		TokenResponse response = null;
-	
+		String refreshToken = refreshHeader.replaceFirst(CommonConstants.SESSION_HTTP_HEADER_PREFIX, "");
 		try {
 			Claims c = Jwts.parser()
 			  .setSigningKey(CommonConstants.TOKEN_PASS)

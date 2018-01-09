@@ -2,9 +2,11 @@ package com.mk.mnx.infr.constants;
 
 public interface CommonConstants {
 	
-	String SESSION_USER="session_user";
-	String SESSION_HTTP_HEADER = "Session-Token";
-	String MDC_HTTP_HEADER = "smdcTkn";
+	//String SESSION_USER="session_user";
+	String SESSION_HTTP_HEADER = "Authorization";
+	String SESSION_HTTP_REFRESH_HEADER = "Authorization";
+	String SESSION_HTTP_HEADER_PREFIX = "Bearer ";
+	String MDC_HTTP_HEADER = "MDC";
 	String MDC_TOKEN = "stkn";
 	
 	String TOKEN_PASS="mnk$123";
