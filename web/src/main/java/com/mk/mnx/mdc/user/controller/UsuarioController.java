@@ -45,31 +45,8 @@ public class UsuarioController extends BaseRestController{
 	
 	@GetMapping
 	@AccessValidation(roles= {EnuRole.ADMIN})
-	public List<Usuario> buscaUsuarios() {
-		PodamFactory factory = new PodamFactoryImpl();
-		Usuario u = factory.manufacturePojo(Usuario.class);
-		u.setRoles(Arrays.asList(EnuRole.values()));
-		
-		Usuario u2 = factory.manufacturePojo(Usuario.class);
-		u2.setRoles(Arrays.asList(EnuRole.values()));
-		return Arrays.asList(u,u2);
-	}
-	
-	@GetMapping
-	@AccessValidation(roles= {EnuRole.ADMIN})
-	public List<Usuario> buscaUsuariosPorNombre(@RequestParam(value="name",required=true) String name) {
-		PodamFactory factory = new PodamFactoryImpl();
-		Usuario u = factory.manufacturePojo(Usuario.class);
-		u.setRoles(Arrays.asList(EnuRole.values()));
-		
-		Usuario u2 = factory.manufacturePojo(Usuario.class);
-		u2.setRoles(Arrays.asList(EnuRole.values()));
-		return Arrays.asList(u,u2);
-	}
-	
-	@GetMapping
-	@AccessValidation(roles= {EnuRole.ADMIN})
-	public List<Usuario> buscaUsuariosPorEmail(@RequestParam(value="email",required=true) String email) {
+	public List<Usuario> buscaUsuarios(@RequestParam(value="name",required=false) String name, 
+										@RequestParam(value="email",required=false) String email ) {
 		PodamFactory factory = new PodamFactoryImpl();
 		Usuario u = factory.manufacturePojo(Usuario.class);
 		u.setRoles(Arrays.asList(EnuRole.values()));
