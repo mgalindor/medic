@@ -15,11 +15,13 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.mk.mnx.infr.constants.CommonConstants;
 import com.mk.mnx.infr.controller.BaseRestController;
 import com.mk.mnx.infr.exception.HttpCodeException;
+import com.mk.mnx.mdc.config.MnxProperties;
 import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.support.annotation.AccessValidation;
 
@@ -32,6 +34,9 @@ public class SecurityAspect {
 
 	protected final Logger logger = LoggerFactory.getLogger(CommonConstants.LOGGER_INFRA);
 
+	@Autowired
+	private MnxProperties mnxProperties;
+	
 	@SuppressWarnings("unchecked")
 	@Around("execution(public * *(..)) && this(com.mk.mnx.infr.controller.BaseRestController) "   
 			+ "&& @target(org.springframework.web.bind.annotation.RestController) && @annotation(com.mk.mnx.mdc.support.annotation.AccessValidation)")
@@ -44,7 +49,7 @@ public class SecurityAspect {
 		AccessValidation va = m.getAnnotation(AccessValidation.class);
 
 		//Realiza la validacion del token y roles
-		if(va.enabled()) {
+		if(va.enabled()  && mnxProperties.isEnabled() ) {
 			HttpServletRequest httpRequest = ctl.getRequest();
 			String header = httpRequest.getHeader(CommonConstants.SESSION_HTTP_HEADER);
 			if (header == null) {

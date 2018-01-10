@@ -8,10 +8,11 @@ spring:
     #date-format: dd-MM-yyyy HH:mm:ss
     date-format=com.fasterxml.jackson.databind.util.ISO8601DateFormat
 
-    
-
 server:
   port: ${PORT:8080}
+
+mnx:
+  enabled: false
 
 eureka:
   client:

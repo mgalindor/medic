@@ -17,6 +17,7 @@ import com.mk.mnx.infr.controller.BaseRestController;
 import com.mk.mnx.mdc.model.domain.DatosDoctor;
 import com.mk.mnx.mdc.model.domain.Usuario;
 import com.mk.mnx.mdc.model.states.EnuRole;
+import com.mk.mnx.mdc.support.annotation.AccessValidation;
 
 import uk.co.jemos.podam.api.PodamFactory;
 import uk.co.jemos.podam.api.PodamFactoryImpl;
@@ -31,19 +32,19 @@ public class UsuarioController extends BaseRestController{
 	}
 	
 	@PostMapping
-	//@AccessValidation(roles= {EnuRole.ADMIN})
+	@AccessValidation(roles= {EnuRole.ADMIN})
 	public Usuario creaUsuario( @RequestBody Usuario usuario ) {
 		return usuario;
 	}
 	
 	@PutMapping
-	//@AccessValidation(roles= {EnuRole.ADMIN})
+	@AccessValidation(roles= {EnuRole.ADMIN})
 	public Usuario actualizaUsuario( @RequestBody Usuario usuario ) {
 		return usuario;
 	}
 	
 	@GetMapping
-	//@AccessValidation(roles= {EnuRole.ADMIN})
+	@AccessValidation(roles= {EnuRole.ADMIN})
 	public List<Usuario> buscaUsuarios(@RequestParam(value="name",required=false) String name, 
 										@RequestParam(value="email",required=false) String email ) {
 		PodamFactory factory = new PodamFactoryImpl();
@@ -56,7 +57,7 @@ public class UsuarioController extends BaseRestController{
 	}
 	
 	@GetMapping("/{idUser}" )
-	//@AccessValidation(roles= {EnuRole.ADMIN})
+	@AccessValidation(roles= {EnuRole.ADMIN})
 	public Usuario buscaUsuario(@PathVariable("idUser") String idUser ) {
 		PodamFactory factory = new PodamFactoryImpl();
 		Usuario u = factory.manufacturePojo(Usuario.class);
@@ -65,25 +66,25 @@ public class UsuarioController extends BaseRestController{
 	}
 	
 	@DeleteMapping
-	//@AccessValidation(roles= {EnuRole.ADMIN})
+	@AccessValidation(roles= {EnuRole.ADMIN})
 	public Usuario borraUsuario( @RequestBody Usuario usuario ) {
 		return usuario;
 	}
 	
 	@PostMapping("/{idUser}/doctor/")
-	//@AccessValidation(roles= {EnuRole.ADMIN})
+	@AccessValidation(roles= {EnuRole.ADMIN})
 	public DatosDoctor creaDoctor(@PathVariable("idUser") String idUser, @RequestBody DatosDoctor doctor ) {
 		return doctor;
 	}
 	
 	@PutMapping("/{idUser}/doctor/")
-	//@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.MEDICO})
+	@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.MEDICO})
 	public DatosDoctor actualizaDatosDoctor(@PathVariable("idUser") String idUser,@RequestBody DatosDoctor doctor) {
 		return doctor;
 	}
 
 	@GetMapping("/{idUser}/doctor/")
-	//@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.MEDICO})
+	@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.MEDICO})
 	public DatosDoctor buscaDoctor(@PathVariable("idUser") String idUser  ) {
 		PodamFactory factory = new PodamFactoryImpl();
 		DatosDoctor datos =  factory.manufacturePojo(DatosDoctor.class);
