@@ -1,5 +1,6 @@
 package com.mk.mnx.mdc.model.domain;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -9,7 +10,7 @@ public class DatosAuditoria {
 	
 	private Date creacion;
 	
-	private boolean enable;
+	private boolean active;
 	
 	private List<FootPrint> modificado;
 
@@ -21,12 +22,12 @@ public class DatosAuditoria {
 		this.creacion = creacion;
 	}
 
-	public boolean isEnable() {
-		return enable;
+	public void setActive(boolean active) {
+		this.active = active;
 	}
-
-	public void setEnable(boolean enable) {
-		this.enable = enable;
+	
+	public boolean isActive() {
+		return active;
 	}
 
 	public List<FootPrint> getModificado() {
@@ -35,6 +36,17 @@ public class DatosAuditoria {
 
 	public void setModificado(List<FootPrint> modificado) {
 		this.modificado = modificado;
+	}
+	
+	public void addModificado(FootPrint m) {
+		if(modificado == null) {
+			modificado = new ArrayList<FootPrint>();
+		}
+		modificado.add(m);
+	}
+	
+	public FootPrint getModificado(int index) {
+		return modificado.get(index);
 	}
 
 	public String getIdUsuarioCreacion() {

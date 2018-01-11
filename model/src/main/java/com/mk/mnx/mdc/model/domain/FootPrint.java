@@ -10,6 +10,14 @@ public class FootPrint extends BaseModel {
 	
 	private Date at;
 	
+	public FootPrint () {
+	}
+	
+	public FootPrint (String by,Date at) {
+		this.by = by;
+		this.at = at;
+	}
+	
 	public String getBy() {
 		return by;
 	}

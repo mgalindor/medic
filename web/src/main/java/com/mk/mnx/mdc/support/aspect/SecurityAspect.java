@@ -43,7 +43,7 @@ public class SecurityAspect {
 	public Object logAround(ProceedingJoinPoint joinPoint) throws Throwable    {
 		logger.debug("Acces validation");
 		BaseRestController ctl = (BaseRestController) joinPoint.getTarget();		
-		Class<? extends Object> c = joinPoint.getTarget().getClass();
+		//Class<? extends Object> c = joinPoint.getTarget().getClass();
 		MethodSignature methodSignature = (MethodSignature) joinPoint.getStaticPart().getSignature();
         Method m = methodSignature.getMethod();
 		AccessValidation va = m.getAnnotation(AccessValidation.class);
