@@ -21,24 +21,25 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 			Integer results) {
 
 		Query query = new Query();
-		if (name != null) {
-			query.addCriteria(Criteria.where("nombre").regex("email"));
-		}
 		if (email != null) {
-			query.addCriteria(Criteria.where("datosDoctor.contacto.nombreCompleto").regex("name"));
+			query.addCriteria(Criteria.where("nombre").regex(email));
+		}
+		if (name != null) {
+			query.addCriteria(Criteria.where("datosDoctor.contacto.nombreCompleto").regex(name));
 		}
 		if (status != null) {
 			query.addCriteria(Criteria.where("datosAuditoria.active").is(status));
 		}
 		if (sort != null) {
-			query.with(new Sort(sort, "id"));
+			query.with(new Sort(sort, "datosAuditoria.creacion"));
 		}
 		if (page != null && results != null) {
 			Pageable pageableRequest = new PageRequest(page, results);
 			query.with(pageableRequest);
 		}
+		query.fields().include("nombre").include("roles").include("datosDoctor").include("datosAuditoria.active");
 
-		List<Usuario> users = getTemplate().find(query, Usuario.class);
+		List<Usuario> users = getTemplate().find(query, Usuario.class );
 
 		return users;
 	}

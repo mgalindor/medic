@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.common.collect.Sets;
 import com.mk.mnx.infr.controller.BaseRestController;
 import com.mk.mnx.mdc.model.domain.DatosDoctor;
 import com.mk.mnx.mdc.model.domain.Usuario;
@@ -49,10 +50,10 @@ public class UsuarioControllerMock extends BaseRestController{
 										@RequestParam(value="email",required=false) String email ) {
 		PodamFactory factory = new PodamFactoryImpl();
 		Usuario u = factory.manufacturePojo(Usuario.class);
-		u.setRoles(Arrays.asList(EnuRole.values()));
+		u.setRoles(  Sets.newHashSet( EnuRole.values() ) );
 		
 		Usuario u2 = factory.manufacturePojo(Usuario.class);
-		u2.setRoles(Arrays.asList(EnuRole.values()));
+		u2.setRoles( Sets.newHashSet( EnuRole.values() ) );
 		return Arrays.asList(u,u2);
 	}
 	
@@ -61,7 +62,7 @@ public class UsuarioControllerMock extends BaseRestController{
 	public Usuario buscaUsuario(@PathVariable("idUser") String idUser ) {
 		PodamFactory factory = new PodamFactoryImpl();
 		Usuario u = factory.manufacturePojo(Usuario.class);
-		u.setRoles(Arrays.asList(EnuRole.values()));
+		u.setRoles(Sets.newHashSet( EnuRole.values() ) );
 		return u;
 	}
 	

@@ -54,11 +54,11 @@ public class UsuarioController extends BaseRestController {
 	@AccessValidation(roles = { EnuRole.ADMIN })
 	public List<Usuario> buscaUsuarios(@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "email", required = false) String email,
-			@RequestParam(value = "status", required = false) Boolean status,
+			@RequestParam(value = "active", required = false) Boolean active,
 			@RequestParam(value = "sort", required = false) Sort.Direction sort,
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "results", required = false) Integer results) {
-		return usuarioService.buscarUsuarios(name, email, status, sort, page, results);
+		return usuarioService.buscarUsuarios(name, email, active, sort, page, results);
 	}
 
 	@GetMapping("/total")
@@ -73,7 +73,7 @@ public class UsuarioController extends BaseRestController {
 	@GetMapping("/{idUser}")
 	@AccessValidation(roles = { EnuRole.ADMIN })
 	public Usuario buscaUsuario(@PathVariable("idUser") String idUser) {
-		return usuarioService.buscaUsuarioPorId(idUser);
+		return usuarioService.buscaUsuarioVistaPorId(idUser);
 	}
 
 	@DeleteMapping

@@ -1,7 +1,9 @@
 package com.mk.mnx.mdc.user.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import com.mk.mnx.infr.service.BaseService;
 import com.mk.mnx.mdc.model.domain.DatosAuditoria;
 import com.mk.mnx.mdc.model.domain.FootPrint;
 import com.mk.mnx.mdc.model.domain.Usuario;
+import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.support.helper.BeanHelper;
 import com.mk.mnx.mdc.user.repository.UserCustomRepository;
 import com.mk.mnx.mdc.user.repository.UsuarioRepository;
@@ -45,10 +48,13 @@ public class UsuarioService extends BaseService {
 		u.setNombre(usuario.getNombre());
 		u.setPassword(beanHelper.encode(usuario.getPassword()));
 		u.setIsConnected(false);
-		u.setRoles(usuario.getRoles());
+		List<EnuRole> roles = new ArrayList<EnuRole>( Arrays.asList(EnuRole.USER));
+		roles.addAll(usuario.getRoles());
+		u.setRoles( new HashSet<EnuRole>(roles) );
 
 		usuarioRepository.insert(u);
-
+		u.setPassword(null);
+		u.setDatosDoctor(null);
 		logger.debug("registrado [{}]", u);
 		return u;
 	}
@@ -60,6 +66,9 @@ public class UsuarioService extends BaseService {
 		}
 		if (usuario.getPassword() == null || usuario.getPassword().trim().equals("")) {
 			errors.add("El password no puede ser vacio");
+		}
+		if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+			errors.add("Los roles no pueden ser vacios");
 		}
 
 		if (!errors.isEmpty()) {
@@ -79,10 +88,15 @@ public class UsuarioService extends BaseService {
 			original.setPassword(beanHelper.encode(nuevo.getPassword()));
 		}
 		original.setNombre(nuevo.getNombre());
-		original.setRoles(nuevo.getRoles());
+		List<EnuRole> roles = new ArrayList<EnuRole>( Arrays.asList(EnuRole.USER));
+		roles.addAll(nuevo.getRoles());
+		original.setRoles( new HashSet<EnuRole>(roles)  );
 		original.getDatosAuditoria().setActive(true);
 		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date()));
 		usuarioRepository.save(original);
+		
+		original.setPassword(null);
+		original.setDatosDoctor(null);
 		return original;
 	}
 
@@ -102,7 +116,15 @@ public class UsuarioService extends BaseService {
 		return userCustomRepository.buscarTotalUsuarios(name, email, status);
 	}
 
-	public Usuario buscaUsuarioPorId(final String id) {
+	public Usuario buscaUsuarioVistaPorId(final String id) {
+		Usuario u = buscaUsuarioPorId(id);
+		u.setPassword(null);
+		u.setDatosDoctor(null);
+		u.setDatosAuditoria(null);
+		return u;
+	}
+	
+	private Usuario buscaUsuarioPorId(final String id) {
 		logger.debug("User id [{}]", id);
 		Usuario r = usuarioRepository.findOne(id);
 		return r;

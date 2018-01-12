@@ -1,6 +1,6 @@
 package com.mk.mnx.mdc.model.domain;
 
-import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -22,9 +22,7 @@ public class Usuario extends BaseModel {
 	
 	private Boolean isConnected;
 	
-	private List<EnuRole> roles;
-	
-	private List<FootPrint> modificado;
+	private Set<EnuRole> roles;
 	
 	private DatosDoctor datosDoctor;
 	
@@ -62,20 +60,12 @@ public class Usuario extends BaseModel {
 		this.isConnected = isConnected;
 	}
 
-	public List<EnuRole> getRoles() {
+	public Set<EnuRole> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<EnuRole> roles) {
+	public void setRoles(Set<EnuRole> roles) {
 		this.roles = roles;
-	}
-
-	public List<FootPrint> getModificado() {
-		return modificado;
-	}
-
-	public void setModificado(List<FootPrint> modificado) {
-		this.modificado = modificado;
 	}
 
 	public DatosDoctor getDatosDoctor() {

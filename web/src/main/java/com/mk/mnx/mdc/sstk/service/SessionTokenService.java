@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -64,7 +65,7 @@ public class SessionTokenService extends BaseService {
 			  .parseClaimsJws(refreshToken).getBody();
 			
 			String user = c.getSubject();
-			List<EnuRole> roles = (List<EnuRole>) c.get(CommonConstants.TOKEN_ROLES);
+			Set<EnuRole> roles = (Set<EnuRole>) c.get(CommonConstants.TOKEN_ROLES);
 			
 
 			String tokenType =  (String) c.get(CommonConstants.TOKEN_TYPE);
@@ -95,7 +96,7 @@ public class SessionTokenService extends BaseService {
 		return cal.getTime();
 	}
 	
-	private String generateTokenJWT(String userName, List<EnuRole> roles) {
+	private String generateTokenJWT(String userName, Set<EnuRole> roles) {
 		HashMap<String, Object> m = new HashMap<String, Object>();
 		m.put(CommonConstants.TOKEN_ROLES, roles);
 		m.put(CommonConstants.TOKEN_TYPE, CommonConstants.TOKEN_TYPE_GRANT);
