@@ -79,13 +79,13 @@ public class UsuarioControllerMock extends BaseRestController{
 	}
 	
 	@PutMapping("/{idUser}/doctor/")
-	@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.MEDICO})
+	@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.DOCTOR})
 	public DatosDoctor actualizaDatosDoctor(@PathVariable("idUser") String idUser,@RequestBody DatosDoctor doctor) {
 		return doctor;
 	}
 
 	@GetMapping("/{idUser}/doctor/")
-	@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.MEDICO})
+	@AccessValidation(roles= {EnuRole.ADMIN,EnuRole.DOCTOR})
 	public DatosDoctor buscaDoctor(@PathVariable("idUser") String idUser  ) {
 		PodamFactory factory = new PodamFactoryImpl();
 		DatosDoctor datos =  factory.manufacturePojo(DatosDoctor.class);

@@ -1,5 +1,6 @@
 package com.mk.mnx.mdc.user.repository.impl;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
@@ -12,13 +13,14 @@ import org.springframework.stereotype.Repository;
 
 import com.mk.mnx.infr.repository.BaseCustomRepository;
 import com.mk.mnx.mdc.model.domain.Usuario;
+import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.user.repository.UserCustomRepository;
 
 @Repository
 public class UserCustomRepositoryImpl extends BaseCustomRepository implements UserCustomRepository {
 
 	public List<Usuario> buscarUsuarios(String name, String email, Boolean status, Direction sort, Integer page,
-			Integer results) {
+			Integer results , String cedula , EnuRole ... enuRoles ) {
 
 		Query query = new Query();
 		if (email != null) {
@@ -29,6 +31,12 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 		}
 		if (status != null) {
 			query.addCriteria(Criteria.where("datosAuditoria.active").is(status));
+		}
+		if (cedula != null) {
+			query.addCriteria(Criteria.where("datosDoctor.cedula").regex(cedula));
+		}
+		if(enuRoles != null ) {
+			query.addCriteria(Criteria.where("roles").in(Arrays.asList(enuRoles)));
 		}
 		if (sort != null) {
 			query.with(new Sort(sort, "datosAuditoria.creacion"));
@@ -44,7 +52,7 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 		return users;
 	}
 
-	public Long buscarTotalUsuarios(String name, String email, Boolean status) {
+	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , EnuRole ... enuRoles) {
 		Query query = new Query();
 		if (name != null) {
 			query.addCriteria(Criteria.where("nombre").regex("email"));
@@ -54,6 +62,12 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 		}
 		if (status != null) {
 			query.addCriteria(Criteria.where("datosAuditoria.active").is(status));
+		}
+		if (cedula != null) {
+			query.addCriteria(Criteria.where("datosDoctor.cedula").regex(cedula));
+		}
+		if(enuRoles != null ) {
+			query.addCriteria(Criteria.where("roles").in(Arrays.asList(enuRoles)));
 		}
 
 		return getTemplate().count(query, Usuario.class);

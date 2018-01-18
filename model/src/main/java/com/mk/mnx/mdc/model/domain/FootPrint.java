@@ -10,12 +10,15 @@ public class FootPrint extends BaseModel {
 	
 	private Date at;
 	
+	private String reason;
+	
 	public FootPrint () {
 	}
 	
-	public FootPrint (String by,Date at) {
+	public FootPrint (String by,Date at, String reason) {
 		this.by = by;
 		this.at = at;
+		this.reason = reason;
 	}
 	
 	public String getBy() {
@@ -34,5 +37,12 @@ public class FootPrint extends BaseModel {
 		this.at = at;
 	}
 
+	public String getReason() {
+		return reason;
+	}
+	
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	
 }

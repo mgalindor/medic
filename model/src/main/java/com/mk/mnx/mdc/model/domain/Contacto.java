@@ -74,6 +74,15 @@ public class Contacto extends BaseModel {
 		this.nombreCompleto = nombreCompleto;
 	}
 	
+	public String creaNombreCompleto() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(nombre != null ? nombre : "");
+		sb.append(" ");
+		sb.append(apPaterno != null ? apPaterno : "");
+		sb.append(" ");
+		sb.append(apMaterno != null ? apMaterno : "");
+		return sb.toString();
+	}
 	
 	
 }

@@ -21,10 +21,8 @@ import com.mk.mnx.mdc.model.domain.DatosDoctor;
 import com.mk.mnx.mdc.model.domain.Usuario;
 import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.support.annotation.AccessValidation;
+import com.mk.mnx.mdc.user.service.DoctorService;
 import com.mk.mnx.mdc.user.service.UsuarioService;
-
-import uk.co.jemos.podam.api.PodamFactory;
-import uk.co.jemos.podam.api.PodamFactoryImpl;
 
 @RestController
 @RequestMapping("usuario")
@@ -32,6 +30,9 @@ public class UsuarioController extends BaseRestController {
 
 	@Autowired
 	private UsuarioService usuarioService;
+	
+	@Autowired
+	private DoctorService doctorService;
 
 	@PostMapping("/createTemporalAdmin")
 	public Usuario createTemporalAdmin(@RequestBody Usuario usuario) {
@@ -57,23 +58,27 @@ public class UsuarioController extends BaseRestController {
 			@RequestParam(value = "active", required = false) Boolean active,
 			@RequestParam(value = "sort", required = false) Sort.Direction sort,
 			@RequestParam(value = "page", required = false) Integer page,
-			@RequestParam(value = "results", required = false) Integer results) {
-		return usuarioService.buscarUsuarios(name, email, active, sort, page, results);
+			@RequestParam(value = "results", required = false) Integer results,
+			@RequestParam(value = "cedula", required = false) String cedula,
+			@RequestParam(value = "role", required = false) String role) {
+		return usuarioService.buscarUsuarios(name, email, active, sort, page, results,cedula,role);
 	}
 
 	@GetMapping("/total")
 	@AccessValidation(roles = { EnuRole.ADMIN })
 	public Map<String, Long> buscarTotalUsuarios(@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "email", required = false) String email,
-			@RequestParam(value = "status", required = false) Boolean status) {
-		long total = usuarioService.buscarTotalUsuarios(name, email, status);
+			@RequestParam(value = "status", required = false) Boolean status,
+			@RequestParam(value = "cedula", required = false) String cedula,
+			@RequestParam(value = "role", required = false) String role) {
+		long total = usuarioService.buscarTotalUsuarios(name, email, status,cedula,role);
 		return Collections.singletonMap("total", total);
 	}
 
 	@GetMapping("/{idUser}")
 	@AccessValidation(roles = { EnuRole.ADMIN })
 	public Usuario buscaUsuario(@PathVariable("idUser") String idUser) {
-		return usuarioService.buscaUsuarioVistaPorId(idUser);
+		return usuarioService.buscaUsuarioPorId(idUser);
 	}
 
 	@DeleteMapping
@@ -85,21 +90,19 @@ public class UsuarioController extends BaseRestController {
 	@PostMapping("/{idUser}/doctor/")
 	@AccessValidation(roles = { EnuRole.ADMIN })
 	public DatosDoctor creaDoctor(@PathVariable("idUser") String idUser, @RequestBody DatosDoctor doctor) {
-		return doctor;
+		return doctorService.crearDoctor(idUser, doctor, getUser());
 	}
 
 	@PutMapping("/{idUser}/doctor/")
-	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.MEDICO })
+	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.DOCTOR })
 	public DatosDoctor actualizaDatosDoctor(@PathVariable("idUser") String idUser, @RequestBody DatosDoctor doctor) {
-		return doctor;
+		return doctorService.actualizarDoctor(idUser, doctor, getUser());
 	}
 
 	@GetMapping("/{idUser}/doctor/")
-	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.MEDICO })
+	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.DOCTOR })
 	public DatosDoctor buscaDoctor(@PathVariable("idUser") String idUser) {
-		PodamFactory factory = new PodamFactoryImpl();
-		DatosDoctor datos = factory.manufacturePojo(DatosDoctor.class);
-		return datos;
+		return doctorService.buscarDoctor(idUser);
 	}
 
 }

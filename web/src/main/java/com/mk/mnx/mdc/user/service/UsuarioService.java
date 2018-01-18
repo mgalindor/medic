@@ -35,7 +35,7 @@ public class UsuarioService extends BaseService {
 	public Usuario creaUsuario(Usuario usuario, String currentUser) {
 		logger.debug("a registrar [{}]", usuario);
 		validaRegistroUsuario(usuario);
-		Usuario v = buscaUsuarioPorNombre(usuario.getNombre());
+		Usuario v = usuarioRepository.findByNombre(usuario.getNombre());
 		if (v != null) {
 			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "El nombre de usuario ya existe");
 		}
@@ -75,15 +75,30 @@ public class UsuarioService extends BaseService {
 			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "Error al registrar usuario", errors);
 		}
 	}
-
-	public Usuario actualizaUsuario(final Usuario nuevo, String currentUser) {
-		validaRegistroUsuario(nuevo);
-		Usuario v = buscaUsuarioPorNombre(nuevo.getNombre());
-		if (v != null && !v.getId().equals(nuevo.getId())) {
-			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "El nombre de usuario ya existe");
+	
+	private void validaActualizacionUsuario(Usuario usuario) {
+		List<String> errors = new ArrayList<String>();
+		if (usuario.getNombre() == null || usuario.getNombre().trim().equals("")) {
+			errors.add("El nombre no puede ser vacio");
+		}
+		
+		if (usuario.getRoles() == null || usuario.getRoles().isEmpty()) {
+			errors.add("Los roles no pueden ser vacios");
 		}
 
-		Usuario original = buscaUsuarioPorId(nuevo.getId());
+		if (!errors.isEmpty()) {
+			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "Error al registrar usuario", errors);
+		}
+	}
+
+	public Usuario actualizaUsuario(final Usuario nuevo, String currentUser) {
+		validaActualizacionUsuario(nuevo);
+		Usuario v = usuarioRepository.findByNombre(nuevo.getNombre());
+		if (v != null && !v.getId().equals(nuevo.getId())) {
+			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "El nombre de usuario ya esta registrado");
+		}
+
+		Usuario original = usuarioRepository.findOne(nuevo.getId());
 		if (nuevo.getPassword() != null) {
 			original.setPassword(beanHelper.encode(nuevo.getPassword()));
 		}
@@ -92,7 +107,7 @@ public class UsuarioService extends BaseService {
 		roles.addAll(nuevo.getRoles());
 		original.setRoles( new HashSet<EnuRole>(roles)  );
 		original.getDatosAuditoria().setActive(true);
-		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date()));
+		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),"actualizaUsuario"));
 		usuarioRepository.save(original);
 		
 		original.setPassword(null);
@@ -101,39 +116,38 @@ public class UsuarioService extends BaseService {
 	}
 
 	public void borraUsuario(Usuario usuario, String currentUser) {
-		Usuario original = buscaUsuarioPorId(usuario.getId());
+		Usuario original = usuarioRepository.findOne(usuario.getId());
 		original.getDatosAuditoria().setActive(false);
-		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date()));
+		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),"borraUsuario"));
 		usuarioRepository.save(original);
 	}
 
 	public List<Usuario> buscarUsuarios(String name, String email, Boolean status, Sort.Direction sort, Integer page,
-			Integer results) {
-		return userCustomRepository.buscarUsuarios(name, email, status, sort, page, results);
+			Integer results  , String cedula ,  String  role) {
+		if (role  != null)
+		{
+			return userCustomRepository.buscarUsuarios(name, email, status, sort, page, results , cedula, EnuRole.valueOf(role));
+		}
+		else {
+			return userCustomRepository.buscarUsuarios(name, email, status, sort, page, results , cedula);
+		}
 	}
 
-	public Long buscarTotalUsuarios(String name, String email, Boolean status) {
-		return userCustomRepository.buscarTotalUsuarios(name, email, status);
+	public Long buscarTotalUsuarios(String name, String email, Boolean status,String cedula ,  String  role) {
+		if (role  != null) {
+			return userCustomRepository.buscarTotalUsuarios(name, email, status, cedula, EnuRole.valueOf(role)  );
+		}
+		else {
+			return userCustomRepository.buscarTotalUsuarios(name, email, status, cedula);
+		}
 	}
 
-	public Usuario buscaUsuarioVistaPorId(final String id) {
-		Usuario u = buscaUsuarioPorId(id);
+	public Usuario buscaUsuarioPorId(final String id) {
+		Usuario u = usuarioRepository.findOne(id);
 		u.setPassword(null);
 		u.setDatosDoctor(null);
 		u.setDatosAuditoria(null);
 		return u;
-	}
-	
-	private Usuario buscaUsuarioPorId(final String id) {
-		logger.debug("User id [{}]", id);
-		Usuario r = usuarioRepository.findOne(id);
-		return r;
-	}
-
-	private Usuario buscaUsuarioPorNombre(final String userName) {
-		logger.debug("User name [{}]", userName);
-		Usuario r = usuarioRepository.findByNombre(userName);
-		return r;
 	}
 
 }
