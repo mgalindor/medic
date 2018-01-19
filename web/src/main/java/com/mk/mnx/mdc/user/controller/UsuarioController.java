@@ -94,13 +94,13 @@ public class UsuarioController extends BaseRestController {
 	}
 
 	@PutMapping("/{idUser}/doctor/")
-	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.DOCTOR })
+	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.MEDICO })
 	public DatosDoctor actualizaDatosDoctor(@PathVariable("idUser") String idUser, @RequestBody DatosDoctor doctor) {
 		return doctorService.actualizarDoctor(idUser, doctor, getUser());
 	}
 
 	@GetMapping("/{idUser}/doctor/")
-	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.DOCTOR })
+	@AccessValidation(roles = { EnuRole.ADMIN, EnuRole.MEDICO })
 	public DatosDoctor buscaDoctor(@PathVariable("idUser") String idUser) {
 		return doctorService.buscarDoctor(idUser);
 	}

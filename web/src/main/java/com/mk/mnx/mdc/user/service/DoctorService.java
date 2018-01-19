@@ -57,7 +57,7 @@ public class DoctorService extends BaseService{
 		else if (!usuario.getDatosAuditoria().isActive()) {
 			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST,"El usuario no esta activo");
 		}
-		else if (!usuario.getRoles().contains(EnuRole.DOCTOR)) {
+		else if (!usuario.getRoles().contains(EnuRole.MEDICO)) {
 			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST,"El usuario no tiene el rol Doctor");
 		}
 	}

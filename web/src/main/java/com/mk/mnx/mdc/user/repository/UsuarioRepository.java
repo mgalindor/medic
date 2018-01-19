@@ -10,7 +10,7 @@ public interface UsuarioRepository extends MongoRepository<Usuario, String> {
 	@Query("{nombre :'?0'}")
 	Usuario findByNombre(String nombre);
 	
-	@Query("{datosDoctor.cedula : : ?0 } } ")
+	@Query("{datosDoctor.cedula : '?0'  } ")
 	Usuario findDoctorCedula(String nombre);
 	
 	//@Query("{nombre : {$regex: ?0 }}")

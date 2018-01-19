@@ -10,7 +10,7 @@ import com.mk.mnx.mdc.model.states.EnuRole;
 public interface UserCustomRepository {
 
 	public List<Usuario> buscarUsuarios(String name, String email, Boolean status, Direction sort, Integer page,
-			Integer results , String cedula , EnuRole ... enuRoles );
+			Integer results , String cedula , String role );
 
-	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , EnuRole ... enuRoles);
+	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , String role);
 }
