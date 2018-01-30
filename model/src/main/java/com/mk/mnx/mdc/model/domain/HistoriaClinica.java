@@ -16,18 +16,6 @@ public class HistoriaClinica extends BaseModel{
 	
 	private InterrogatorioApartadoSistemas interrogatorioApartadoSistemas;
 	
-//	private SignosVitales signosVitales;
-//	
-//	private Somatometria somatometria;
-//	
-//	private ExploracionFisica exploracionFisica;
-//	
-//	private String diagnostico;
-//	
-//	private String tratamiento;
-//	
-//	private String notas;
-
 	public FichaIdentificacion getFichaIdentificacion() {
 		return fichaIdentificacion;
 	}

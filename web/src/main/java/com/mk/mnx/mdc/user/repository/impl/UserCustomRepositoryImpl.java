@@ -20,7 +20,7 @@ import com.mk.mnx.mdc.user.repository.UserCustomRepository;
 public class UserCustomRepositoryImpl extends BaseCustomRepository implements UserCustomRepository {
 
 	public List<Usuario> buscarUsuarios(String name, String email, Boolean status, Direction sort, Integer page,
-			Integer results , String cedula , String role ) {
+			Integer results , String cedula , String role , boolean datosDoctorLlenos) {
 
 		Query query = new Query();
 		if (email != null) {
@@ -34,6 +34,9 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 		}
 		if (cedula != null) {
 			query.addCriteria(Criteria.where("datosDoctor.cedula").regex(cedula));
+		}
+		if (datosDoctorLlenos) {
+			query.addCriteria(Criteria.where("datosDoctor").ne(null));
 		}
 		if(role != null ) {
 			String rs [] = role.split(",");
@@ -53,7 +56,7 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 		return users;
 	}
 
-	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , String role) {
+	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , String role, boolean datosDoctorLlenos) {
 		Query query = new Query();
 		if (name != null) {
 			query.addCriteria(Criteria.where("nombre").regex("email"));
@@ -66,6 +69,9 @@ public class UserCustomRepositoryImpl extends BaseCustomRepository implements Us
 		}
 		if (cedula != null) {
 			query.addCriteria(Criteria.where("datosDoctor.cedula").regex(cedula));
+		}
+		if (datosDoctorLlenos) {
+			query.addCriteria(Criteria.where("datosDoctor").ne(null));
 		}
 		if(role != null ) {
 			query.addCriteria(Criteria.where("roles").in(role));

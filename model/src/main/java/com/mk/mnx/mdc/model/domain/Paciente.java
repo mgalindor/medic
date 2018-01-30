@@ -22,6 +22,8 @@ public class Paciente extends BaseModel{
 	
 	private EnuSexo sexo;
 	
+	private String curp;
+	
 	private HistoriaClinica historiaClinica;
 	
 	private DatosAuditoria datosAuditoria;
@@ -80,6 +82,14 @@ public class Paciente extends BaseModel{
 
 	public void setDatosAuditoria(DatosAuditoria datosAuditoria) {
 		this.datosAuditoria = datosAuditoria;
+	}
+	
+	public String getCurp() {
+		return curp;
+	}
+	
+	public void setCurp(String curp) {
+		this.curp = curp;
 	}
 	
 }

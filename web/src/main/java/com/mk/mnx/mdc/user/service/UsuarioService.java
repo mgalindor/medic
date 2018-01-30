@@ -123,12 +123,12 @@ public class UsuarioService extends BaseService {
 	}
 
 	public List<Usuario> buscarUsuarios(String name, String email, Boolean status, Sort.Direction sort, Integer page,
-			Integer results  , String cedula ,  String  role) {
-			return userCustomRepository.buscarUsuarios(name, email, status, sort, page, results , cedula, role);
+			Integer results  , String cedula ,  String  role , boolean docFilled) {
+			return userCustomRepository.buscarUsuarios(name, email, status, sort, page, results , cedula, role,docFilled);
 	}
 
-	public Long buscarTotalUsuarios(String name, String email, Boolean status,String cedula ,  String  role) {
-			return userCustomRepository.buscarTotalUsuarios(name, email, status, cedula, role  );
+	public Long buscarTotalUsuarios(String name, String email, Boolean status,String cedula ,  String  role, boolean docFilled) {
+			return userCustomRepository.buscarTotalUsuarios(name, email, status, cedula, role, docFilled);
 	}
 
 	public Usuario buscaUsuarioPorId(final String id) {
