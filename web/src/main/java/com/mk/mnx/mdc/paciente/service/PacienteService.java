@@ -1,5 +1,6 @@
 package com.mk.mnx.mdc.paciente.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mk.mnx.infr.service.BaseService;
+import com.mk.mnx.mdc.model.domain.FootPrint;
 import com.mk.mnx.mdc.model.domain.Paciente;
 import com.mk.mnx.mdc.model.states.EnuSexo;
 import com.mk.mnx.mdc.paciente.repository.PacienteCustomRepository;
@@ -22,6 +24,8 @@ public class PacienteService extends BaseService{
 	private PacienteCustomRepository pacienteCustomRepository;
 	
 	public Paciente creaPaciente( Paciente paciente , String currentUser) {
+		Paciente original = pacienteRepository.findByCurp(paciente.getCurp());
+		
 		return paciente;
 	}
 	
@@ -30,11 +34,19 @@ public class PacienteService extends BaseService{
 	}
 	
 	public Paciente borraPaciente( Paciente paciente, String currentUser ) {
+		Paciente original = pacienteRepository.findOne(paciente.getId());
+		original.getDatosAuditoria().setActive(false);
+		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),"borraPaciente"));
+		pacienteRepository.save(original);
 		return paciente;
 	}
 	
 	public Paciente buscaPaciente(String idPaciente ) {
-		return pacienteRepository.findOne(idPaciente);
+		Paciente paciente = pacienteRepository.findOne(idPaciente);
+		paciente.setHistoriaClinica(null);
+		paciente.getDatosAuditoria().setIdUsuarioCreacion(null);
+		paciente.getDatosAuditoria().setModificado(null);
+		return paciente;
 	}
 	
 	public List<Paciente> buscaPacientes(String name,  String curp, EnuSexo sexo, String createdBy,

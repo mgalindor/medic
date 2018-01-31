@@ -135,7 +135,8 @@ public class UsuarioService extends BaseService {
 		Usuario u = usuarioRepository.findOne(id);
 		u.setPassword(null);
 		u.setDatosDoctor(null);
-		u.setDatosAuditoria(null);
+		u.getDatosAuditoria().setIdUsuarioCreacion(null);
+		u.getDatosAuditoria().setModificado(null);
 		return u;
 	}
 

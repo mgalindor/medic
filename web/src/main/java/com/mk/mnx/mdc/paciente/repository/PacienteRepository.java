@@ -6,4 +6,6 @@ import com.mk.mnx.mdc.model.domain.Paciente;
 
 public interface PacienteRepository extends MongoRepository<Paciente, String> {
 	
+	Paciente findByCurp(String curp);
+	
 }
