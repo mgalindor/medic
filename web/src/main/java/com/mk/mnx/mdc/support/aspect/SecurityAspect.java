@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -16,6 +15,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import com.mk.mnx.infr.constants.CommonConstants;
@@ -53,7 +53,7 @@ public class SecurityAspect {
 			HttpServletRequest httpRequest = ctl.getRequest();
 			String header = httpRequest.getHeader(CommonConstants.SESSION_HTTP_HEADER);
 			if (header == null) {
-				throw new HttpCodeException(HttpServletResponse.SC_UNAUTHORIZED,"Autentication is necesary");
+				throw new HttpCodeException(HttpStatus.UNAUTHORIZED,"Autentication is necesary");
 			} else {
 				try {
 					String token = header.replaceFirst(CommonConstants.SESSION_HTTP_HEADER_PREFIX, "");
@@ -74,7 +74,7 @@ public class SecurityAspect {
 					return joinPoint.proceed();
 				} catch (Exception e) {
 					logger.error("Error al validar el token ", e);
-					throw new HttpCodeException(HttpServletResponse.SC_FORBIDDEN,"Autentication is not valid");
+					throw new HttpCodeException(HttpStatus.FORBIDDEN,"Autentication is not valid");
 				}
 			}
 		}
