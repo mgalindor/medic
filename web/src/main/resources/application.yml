@@ -10,8 +10,10 @@ spring:
 server:
   port: ${PORT:8080}
 
-mnx:
+monox:
   enabled: false
+  validation:
+    messages:classpath:error
 
 eureka:
   client:
