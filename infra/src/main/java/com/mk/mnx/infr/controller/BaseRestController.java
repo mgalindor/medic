@@ -1,6 +1,7 @@
 package com.mk.mnx.infr.controller;
 
 import java.io.IOException;
+import java.util.Date;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.stream.Collectors;
 
@@ -11,9 +12,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mk.mnx.infr.constants.CommonConstants;
 import com.mk.mnx.infr.exception.HttpCodeException;
+import com.mk.mnx.infr.model.ErrorResponse;
 import com.mk.mnx.vld.exception.MonoxValidationConstraintException;
 
 public abstract class BaseRestController {
@@ -28,7 +31,6 @@ public abstract class BaseRestController {
     private String user;
     
     protected String getUser() {	
-		//return (String) request.getAttribute(CommonConstants.SESSION_USER);
     	return user;
 	}
     
@@ -45,9 +47,22 @@ public abstract class BaseRestController {
     }
     
     @ExceptionHandler(HttpCodeException.class)
-    public void handleHttpError(HttpServletRequest req, HttpServletResponse resp , HttpCodeException ex) throws IOException {
+    @ResponseBody
+    public ErrorResponse  handleHttpError(HttpServletRequest req, HttpServletResponse resp , HttpCodeException ex) throws IOException {
     	loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
-    	resp.sendError(ex.getHttpCode(),ex.getMessage());
+    	resp.sendError(ex.getStatusCode().value(),ex.getMessage());
+    	
+    	ErrorResponse error = new ErrorResponse();
+    	
+    	error.setTimestamp( String.valueOf( (new Date()).getTime() ));
+    	error.setStatus(String.valueOf(ex.getStatusCode().value()));
+    	error.setError(ex.getStatusCode().name());
+    	error.setException(HttpCodeException.class.getName());
+    	error.setMessage(ex.getMessage());
+    	error.setPath(req.getRequestURL().toString());
+    	error.setMessages(ex.getMessages());
+    	
+    	return error;
 
     }
     

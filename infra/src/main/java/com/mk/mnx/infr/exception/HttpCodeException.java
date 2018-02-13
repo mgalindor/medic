@@ -2,47 +2,28 @@ package com.mk.mnx.infr.exception;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.client.HttpStatusCodeException;
 
-public class HttpCodeException  extends RuntimeException {
+public class HttpCodeException  extends HttpStatusCodeException {
 	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -5792753491292099178L;
-	private int httpCode;
 	private List<String> messages ;
 	
-	public static HttpServletResponse CODES;
-	
-	public HttpCodeException(int httpCode) {
-		super();
-		this.httpCode = httpCode;
+	public HttpCodeException(HttpStatus statusCode ) {
+		super(statusCode);
 	}
 	
-	public HttpCodeException(int httpCode , String message) {
-		super(message);
-		this.httpCode = httpCode;
+	public HttpCodeException(HttpStatus statusCode, String message) {
+		super(statusCode ,message);
 	}
 	
-	public HttpCodeException(int httpCode , String message, List<String> messages) {
-		super(message);
-		this.httpCode = httpCode;
+	public HttpCodeException(HttpStatus statusCode , String message, List<String> messages) {
+		super(statusCode,message);
 		this.messages = messages;
-	}
-	
-	public HttpCodeException(int httpCode , Throwable t) {
-		super(t);
-		this.httpCode = httpCode;
-	}
-	
-	public HttpCodeException(int httpCode , String message , Throwable t) {
-		super(message,t);
-		this.httpCode = httpCode;
-	}
-	
-	public int getHttpCode() {
-		return httpCode;
 	}
 	
 	public List<String> getMessages() {

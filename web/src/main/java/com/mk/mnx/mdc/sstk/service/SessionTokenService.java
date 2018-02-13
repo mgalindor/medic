@@ -4,12 +4,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.mk.mnx.infr.constants.CommonConstants;
@@ -47,10 +45,10 @@ public class SessionTokenService extends BaseService {
 				response.setRefreshToken(generateRefreshToken(u));
 			}
 			else {
-				throw new HttpCodeException(HttpServletResponse.SC_BAD_REQUEST);
+				throw new HttpCodeException(HttpStatus.BAD_REQUEST);
 			}
 		}else {
-			throw new HttpCodeException(HttpServletResponse.SC_BAD_REQUEST);
+			throw new HttpCodeException(HttpStatus.BAD_REQUEST);
 		}
 		return response;
 	}
@@ -70,7 +68,7 @@ public class SessionTokenService extends BaseService {
 
 			String tokenType =  (String) c.get(CommonConstants.TOKEN_TYPE);
 			if(tokenType.equals(CommonConstants.TOKEN_TYPE_REF)) {
-				throw new HttpCodeException(HttpServletResponse.SC_FORBIDDEN);
+				throw new HttpCodeException(HttpStatus.FORBIDDEN);
 			}
 			
 			Usuario u = new Usuario();
@@ -82,9 +80,11 @@ public class SessionTokenService extends BaseService {
 			response.setToken(generateToken (u));
 			response.setRefreshToken(generateRefreshToken(u));
 		}catch(ExpiredJwtException e) {
-			throw new HttpCodeException(HttpServletResponse.SC_FORBIDDEN, e);
+			logger.error("Error",e);
+			throw new HttpCodeException(HttpStatus.FORBIDDEN);
 		}catch(Exception e) {
-			throw new HttpCodeException(HttpServletResponse.SC_BAD_REQUEST);
+			logger.error("Error",e);
+			throw new HttpCodeException(HttpStatus.BAD_REQUEST);
 		}
 		return response;
 	}

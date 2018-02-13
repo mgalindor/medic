@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.mk.mnx.infr.exception.HttpCodeException;
@@ -16,6 +17,7 @@ import com.mk.mnx.mdc.model.domain.DatosAuditoria;
 import com.mk.mnx.mdc.model.domain.FootPrint;
 import com.mk.mnx.mdc.model.domain.Usuario;
 import com.mk.mnx.mdc.model.states.EnuRole;
+import com.mk.mnx.mdc.model.states.EnuTipoCambio;
 import com.mk.mnx.mdc.support.helper.BeanHelper;
 import com.mk.mnx.mdc.user.repository.UserCustomRepository;
 import com.mk.mnx.mdc.user.repository.UsuarioRepository;
@@ -37,7 +39,7 @@ public class UsuarioService extends BaseService {
 		validaRegistroUsuario(usuario);
 		Usuario v = usuarioRepository.findByNombre(usuario.getNombre());
 		if (v != null) {
-			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "El nombre de usuario ya existe");
+			throw new HttpCodeException(HttpStatus.BAD_REQUEST, "El nombre de usuario ya existe");
 		}
 		Usuario u = new Usuario();
 		u.setDatosAuditoria(new DatosAuditoria());
@@ -72,7 +74,7 @@ public class UsuarioService extends BaseService {
 		}
 
 		if (!errors.isEmpty()) {
-			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "Error al registrar usuario", errors);
+			throw new HttpCodeException(HttpStatus.BAD_REQUEST, "Error al registrar usuario", errors);
 		}
 	}
 	
@@ -87,7 +89,7 @@ public class UsuarioService extends BaseService {
 		}
 
 		if (!errors.isEmpty()) {
-			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "Error al registrar usuario", errors);
+			throw new HttpCodeException(HttpStatus.BAD_REQUEST, "Error al registrar usuario", errors);
 		}
 	}
 
@@ -95,7 +97,7 @@ public class UsuarioService extends BaseService {
 		validaActualizacionUsuario(nuevo);
 		Usuario v = usuarioRepository.findByNombre(nuevo.getNombre());
 		if (v != null && !v.getId().equals(nuevo.getId())) {
-			throw new HttpCodeException(HttpCodeException.CODES.SC_BAD_REQUEST, "El nombre de usuario ya esta registrado");
+			throw new HttpCodeException(HttpStatus.BAD_REQUEST, "El nombre de usuario ya esta registrado");
 		}
 
 		Usuario original = usuarioRepository.findOne(nuevo.getId());
@@ -107,7 +109,7 @@ public class UsuarioService extends BaseService {
 		roles.addAll(nuevo.getRoles());
 		original.setRoles( new HashSet<EnuRole>(roles)  );
 		original.getDatosAuditoria().setActive(true);
-		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),"actualizaUsuario"));
+		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),EnuTipoCambio.ACTUALIZAR_USUARIO));
 		usuarioRepository.save(original);
 		
 		original.setPassword(null);
@@ -118,7 +120,7 @@ public class UsuarioService extends BaseService {
 	public void borraUsuario(Usuario usuario, String currentUser) {
 		Usuario original = usuarioRepository.findOne(usuario.getId());
 		original.getDatosAuditoria().setActive(false);
-		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),"borraUsuario"));
+		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),EnuTipoCambio.BORRAR_USUARIO));
 		usuarioRepository.save(original);
 	}
 
