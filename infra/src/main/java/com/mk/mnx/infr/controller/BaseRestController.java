@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -67,15 +68,23 @@ public abstract class BaseRestController {
     }
     
     @ExceptionHandler(UndeclaredThrowableException.class)
-    public void handleUndeclaredThrowableException(HttpServletRequest req, HttpServletResponse resp , UndeclaredThrowableException ex) throws IOException {
+    public ErrorResponse handleUndeclaredThrowableException(HttpServletRequest req, HttpServletResponse resp , UndeclaredThrowableException ex) throws IOException {
     	loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
-    	resp.sendError(HttpServletResponse.SC_BAD_REQUEST,ex.getMessage());
+    	
+    	ErrorResponse error = new ErrorResponse();
+    	
+    	error.setTimestamp( String.valueOf( (new Date()).getTime() ));
+    	error.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
+    	error.setError(HttpStatus.BAD_REQUEST.name());
+    	error.setException(ex.getUndeclaredThrowable().getClass().getName());
+    	error.setMessage(ex.getMessage());
+    	error.setPath(req.getRequestURL().toString());
+    	
     	if(ex.getUndeclaredThrowable() instanceof MonoxValidationConstraintException) {
-    		resp.sendError(HttpServletResponse.SC_BAD_REQUEST,ex.getMessage());
     		MonoxValidationConstraintException mvce = (MonoxValidationConstraintException) ex.getUndeclaredThrowable();
-    		mvce.getErrors().stream().map( f -> f.getMessage() ).collect(Collectors.toList());
+        	error.setMessages(mvce.getErrors().stream().map( f -> f.getMessage() ).collect(Collectors.toList()));
     	}
-
+    	return error;
     }
     
 }

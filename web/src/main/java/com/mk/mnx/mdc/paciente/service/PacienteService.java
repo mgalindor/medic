@@ -11,6 +11,7 @@ import com.mk.mnx.infr.service.BaseService;
 import com.mk.mnx.mdc.model.domain.FootPrint;
 import com.mk.mnx.mdc.model.domain.Paciente;
 import com.mk.mnx.mdc.model.states.EnuSexo;
+import com.mk.mnx.mdc.model.states.EnuTipoCambio;
 import com.mk.mnx.mdc.paciente.repository.PacienteCustomRepository;
 import com.mk.mnx.mdc.paciente.repository.PacienteRepository;
 
@@ -36,7 +37,7 @@ public class PacienteService extends BaseService{
 	public Paciente borraPaciente( Paciente paciente, String currentUser ) {
 		Paciente original = pacienteRepository.findOne(paciente.getId());
 		original.getDatosAuditoria().setActive(false);
-		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),"borraPaciente"));
+		original.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),EnuTipoCambio.BORRAR_PACIENTE));
 		pacienteRepository.save(original);
 		return paciente;
 	}
