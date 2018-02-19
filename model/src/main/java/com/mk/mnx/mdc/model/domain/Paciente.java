@@ -3,6 +3,7 @@ package com.mk.mnx.mdc.model.domain;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.mk.mnx.infr.model.BaseModel;
@@ -22,6 +23,7 @@ public class Paciente extends BaseModel{
 	
 	private EnuSexo sexo;
 	
+	@Indexed(unique=true)
 	private String curp;
 	
 	private HistoriaClinica historiaClinica;

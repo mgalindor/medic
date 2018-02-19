@@ -11,9 +11,10 @@ server:
   port: ${PORT:8080}
 
 monox:
-  enabled: false
+  security:
+    enabled: false
   validation:
-    messages:classpath:error
+    messages: classpath:error
 
 eureka:
   client:

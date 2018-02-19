@@ -59,7 +59,7 @@ public abstract class BaseRestController {
     	error.setStatus(String.valueOf(ex.getStatusCode().value()));
     	error.setError(ex.getStatusCode().name());
     	error.setException(HttpCodeException.class.getName());
-    	error.setMessage(ex.getMessage());
+    	error.setMessage(ex.getStatusText());
     	error.setPath(req.getRequestURL().toString());
     	error.setMessages(ex.getMessages());
     	
@@ -77,7 +77,7 @@ public abstract class BaseRestController {
     	error.setStatus(String.valueOf(HttpStatus.BAD_REQUEST.value()));
     	error.setError(HttpStatus.BAD_REQUEST.name());
     	error.setException(ex.getUndeclaredThrowable().getClass().getName());
-    	error.setMessage(ex.getMessage());
+    	error.setMessage(ex.getUndeclaredThrowable().getMessage());
     	error.setPath(req.getRequestURL().toString());
     	
     	if(ex.getUndeclaredThrowable() instanceof MonoxValidationConstraintException) {
