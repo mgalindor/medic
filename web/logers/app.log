@@ -1,0 +1,30 @@
+2018-02-14 22:13:23,617 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-14 22:14:00,591 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 44.204 seconds (JVM running for 46.278)
+2018-02-14 22:20:23,646 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-14 22:20:52,555 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 36.813 seconds (JVM running for 39.214)
+2018-02-14 22:32:51,845 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-14 22:33:24,212 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 39.324 seconds (JVM running for 41.702)
+2018-02-14 22:35:55,431 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-14 22:36:29,950 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 41.794 seconds (JVM running for 43.921)
+2018-02-14 22:38:29,726 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-14 22:38:59,292 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 36.587 seconds (JVM running for 38.688)
+2018-02-18 12:12:06,242 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 12:12:43,534 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 46.221 seconds (JVM running for 48.85)
+2018-02-18 12:24:01,814 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 12:24:37,706 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 43.919 seconds (JVM running for 46.384)
+2018-02-18 12:29:11,815 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 12:29:48,515 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 44.7 seconds (JVM running for 47.385)
+2018-02-18 12:53:33,952 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 12:54:13,875 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 47.879 seconds (JVM running for 50.181)
+2018-02-18 19:28:20,418 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 19:29:00,044 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 48.294 seconds (JVM running for 52.531)
+2018-02-18 19:44:23,420 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 19:46:05,411 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 108.284 seconds (JVM running for 110.647)
+2018-02-18 20:02:39,756 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 20:03:08,253 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 33.989 seconds (JVM running for 36.537)
+2018-02-18 20:06:15,499 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 20:06:47,380 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 37.008 seconds (JVM running for 40.487)
+2018-02-18 20:17:18,815 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 20:17:50,368 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 38.02 seconds (JVM running for 40.24)
+2018-02-18 22:29:33,416 - [  INFO] [                              ]-[             SpringApplication:593]: No active profile set, falling back to default profiles: default
+2018-02-18 22:30:03,405 - [  INFO] [                              ]-[             StartupInfoLogger:57]: Started StartUpService in 34.925 seconds (JVM running for 36.695)

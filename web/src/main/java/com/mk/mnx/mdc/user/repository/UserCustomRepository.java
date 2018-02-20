@@ -5,12 +5,11 @@ import java.util.List;
 import org.springframework.data.domain.Sort.Direction;
 
 import com.mk.mnx.mdc.model.domain.Usuario;
-import com.mk.mnx.mdc.model.states.EnuRole;
 
 public interface UserCustomRepository {
 
 	public List<Usuario> buscarUsuarios(String name, String email, Boolean status, Direction sort, Integer page,
-			Integer results , String cedula , String role );
+			Integer results , String cedula , String role ,boolean datosDoctorLlenos);
 
-	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , String role);
+	public Long buscarTotalUsuarios(String name, String email, Boolean status , String cedula , String role,boolean datosDoctorLlenos);
 }

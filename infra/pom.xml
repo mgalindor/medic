@@ -17,6 +17,12 @@
 	<name>infra</name>
 
 	<dependencies>
+	
+		<dependency>
+			<groupId>com.mk.mnx.vld</groupId>
+			<artifactId>mnx-validator-core</artifactId>
+			<version>1.0.4-SNAPSHOT</version>
+		</dependency>
 
 		<dependency>
 			<!-- Setup Spring MVC & REST, use Embedded Tomcat -->

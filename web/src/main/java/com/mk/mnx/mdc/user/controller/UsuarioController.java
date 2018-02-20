@@ -60,8 +60,9 @@ public class UsuarioController extends BaseRestController {
 			@RequestParam(value = "page", required = false) Integer page,
 			@RequestParam(value = "results", required = false) Integer results,
 			@RequestParam(value = "cedula", required = false) String cedula,
-			@RequestParam(value = "role", required = false) String role) {
-		return usuarioService.buscarUsuarios(name, email, active, sort, page, results,cedula,role);
+			@RequestParam(value = "role", required = false) String role,
+			@RequestParam(value = "docFilled", required = false) boolean docFilled ) {
+		return usuarioService.buscarUsuarios(name, email, active, sort, page, results,cedula,role,docFilled);
 	}
 
 	@GetMapping("/total")
@@ -70,8 +71,9 @@ public class UsuarioController extends BaseRestController {
 			@RequestParam(value = "email", required = false) String email,
 			@RequestParam(value = "status", required = false) Boolean status,
 			@RequestParam(value = "cedula", required = false) String cedula,
-			@RequestParam(value = "role", required = false) String role) {
-		long total = usuarioService.buscarTotalUsuarios(name, email, status,cedula,role);
+			@RequestParam(value = "role", required = false) String role,
+			@RequestParam(value = "docFilled", required = false) boolean docFilled ) {
+		long total = usuarioService.buscarTotalUsuarios(name, email, status,cedula,role,docFilled);
 		return Collections.singletonMap("total", total);
 	}
 
