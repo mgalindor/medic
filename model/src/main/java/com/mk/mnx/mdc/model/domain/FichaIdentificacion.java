@@ -8,7 +8,7 @@ public class FichaIdentificacion extends BaseModel {
 	private String edoCivil;
 	private String escolaridad;
 	private String ocupacion;
-	private String lugatOrigen;
+	private String lugarOrigen;
 	private String lugarResidencia;
 	private String religion;
 	
@@ -36,11 +36,11 @@ public class FichaIdentificacion extends BaseModel {
 	public void setOcupacion(String ocupacion) {
 		this.ocupacion = ocupacion;
 	}
-	public String getLugatOrigen() {
-		return lugatOrigen;
+	public String getLugarOrigen() {
+		return lugarOrigen;
 	}
-	public void setLugatOrigen(String lugatOrigen) {
-		this.lugatOrigen = lugatOrigen;
+	public void setLugarOrigen(String lugarOrigen) {
+		this.lugarOrigen = lugarOrigen;
 	}
 	public String getLugarResidencia() {
 		return lugarResidencia;

@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mk.mnx.infr.controller.BaseRestController;
+import com.mk.mnx.mdc.model.domain.HistoriaClinica;
 import com.mk.mnx.mdc.model.domain.Paciente;
+import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.model.states.EnuSexo;
 import com.mk.mnx.mdc.paciente.service.PacienteService;
+import com.mk.mnx.mdc.support.annotation.AccessValidation;
 
 @RestController
 @RequestMapping("paciente")
@@ -27,16 +30,19 @@ public class PacienteController extends BaseRestController {
 	private PacienteService pacienteService;
 	
 	@PostMapping
+	@AccessValidation(roles = {  EnuRole.MEDICO })
 	public Paciente creaPaciente( @RequestBody Paciente paciente ) {
 		return pacienteService.creaPaciente(paciente, getUser());
 	}
 	
 	@PutMapping
+	@AccessValidation(roles = {  EnuRole.MEDICO })
 	public Paciente actualizaPaciente( @RequestBody Paciente paciente ) {
 		return pacienteService.actualizaPaciente(paciente, getUser());
 	}
 	
 	@GetMapping
+	@AccessValidation(roles = {  EnuRole.MEDICO })
 	public List<Paciente> buscaPacientes(@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "curp", required = false) String curp,
 			@RequestParam(value = "sexo", required = false) EnuSexo sexo,
@@ -50,6 +56,7 @@ public class PacienteController extends BaseRestController {
 	}
 	
 	@GetMapping("/total")
+	@AccessValidation(roles = {  EnuRole.MEDICO })
 	public Long buscaTotalPacientes(@RequestParam(value = "name", required = false) String name,
 			@RequestParam(value = "curp", required = false) String curp,
 			@RequestParam(value = "sexo", required = false) EnuSexo sexo,
@@ -60,13 +67,32 @@ public class PacienteController extends BaseRestController {
 	}
 	
 	@GetMapping("/{idPaciente}" )
+	@AccessValidation(roles = {  EnuRole.MEDICO })
 	public Paciente buscaPaciente(@PathVariable("idPaciente") String idPaciente ) {
 		return pacienteService.buscaPaciente(idPaciente);
 	}
 	
 	@DeleteMapping
+	@AccessValidation(roles = {  EnuRole.MEDICO })
 	public void borraPaciente( @RequestBody Paciente paciente ) {
 		 pacienteService.borraPaciente(paciente, getUser());
 	}
+	
+	@PostMapping("/{idPaciente}/historia")
+	@AccessValidation(roles = {  EnuRole.MEDICO })
+	public HistoriaClinica creaHistoria(@PathVariable("idPaciente") String idPaciente, @RequestBody HistoriaClinica historia) {
+		return pacienteService.creaHistoria(historia, idPaciente, getUser());
+	} 
+	
+	@PutMapping("/{idPaciente}/historia")
+	@AccessValidation(roles = {  EnuRole.MEDICO })
+	public HistoriaClinica actualizaHistoria(@PathVariable("idPaciente") String idPaciente, @RequestBody HistoriaClinica historia) {
+		return pacienteService.actualizaHistoria(historia, idPaciente, getUser());
+	} 
 
+	@GetMapping("/{idPaciente}/historia")
+	@AccessValidation(roles = { EnuRole.MEDICO })
+	public HistoriaClinica buscaHistoria(@PathVariable("idPaciente") String idPaciente) {
+		return pacienteService.buscaHistoria(idPaciente);
+	} 
 }

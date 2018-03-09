@@ -49,9 +49,8 @@ public abstract class BaseRestController {
     
     @ExceptionHandler(HttpCodeException.class)
     @ResponseBody
-    public ErrorResponse  handleHttpError(HttpServletRequest req, HttpServletResponse resp , HttpCodeException ex) throws IOException {
+    public ErrorResponse  handleHttpError(HttpServletRequest req, HttpCodeException ex) throws IOException {
     	loggerException.error("Request: [{}] message: [{}]" , req.getRequestURL() , ex.getMessage());
-    	resp.sendError(ex.getStatusCode().value(),ex.getMessage());
     	
     	ErrorResponse error = new ErrorResponse();
     	

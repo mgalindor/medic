@@ -14,12 +14,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>mdc Web</name>
-
-	<properties>
-		<!--project.build.sourceEncoding>UTF-8</project.build.sourceEncoding -->
-		<docker.verbose>true</docker.verbose>
-	</properties>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.mk.mnx.mdc</groupId>
@@ -109,73 +104,24 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-
+	
 	<build>
 		<plugins>
-			<!-- Empaqueta la aplicacion en un solo jar -->
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-				<configuration>
-					<mainClass>com.mk.mnx.StartUpService</mainClass>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>repackage</goal>
-						</goals>
-						<configuration>
-							<classifier>spring-boot</classifier>
-							<mainClass>com.mk.mnx.StartUpService</mainClass>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-
-			<!-- Permite desplegar y administrar una imagen del proyecto en docker -->
-			<plugin>
-				<groupId>io.fabric8</groupId>
-				<artifactId>docker-maven-plugin</artifactId>
-				<version>0.23.0</version>
-				<configuration>
-					<dockerHost>tcp://docker:4243</dockerHost>
-					<images>
-						<image>
-							<name>mdc/user</name>
-							<alias>mdc/user</alias>
-							<build>
-								<dockerFileDir>${project.basedir}/src/main/docker</dockerFileDir>
-								<!-- Permite copiar el archivo generado spring-boot-maven-plugin 
-									para ser desplegado en el contenedor -->
-								<assembly>
-									<mode>dir</mode>
-									<inline xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-										xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
-										xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
-										<id>maven</id>
-										<files>
-											<file>
-												<source>target/${project.build.finalName}-spring-boot.jar</source>
-											</file>
-										</files>
-									</inline>
-								</assembly>
-							</build>
-							<run>
-								<namingStrategy>alias</namingStrategy>
-								<ports>
-									<port>9088:8088</port>
-								</ports>
-								<extraHosts>mgdb:192.168.33.11</extraHosts>
-								<extraHosts>eureka.peer.one:192.168.33.10</extraHosts>
-							</run>
-						</image>
-					</images>
-				</configuration>
-			</plugin>
+		    <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-compiler-plugin</artifactId>
+		        <version>3.7.0</version>
+		        <configuration>
+		            <source>1.8</source>
+		            <target>1.8</target>
+		            <parameters>true</parameters>
+		            <forceJavacCompilerUse>true</forceJavacCompilerUse>
+		            <fork>true</fork>
+		            <compilerArgs>
+		                <arg>-parameters</arg>
+		            </compilerArgs>
+		        </configuration>
+		    </plugin>
 		</plugins>
-
-
 	</build>
-
 </project>
