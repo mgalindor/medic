@@ -14,7 +14,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>mdc Web</name>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.mk.mnx.mdc</groupId>
@@ -104,24 +104,44 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
-		    <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-compiler-plugin</artifactId>
-		        <version>3.7.0</version>
-		        <configuration>
-		            <source>1.8</source>
-		            <target>1.8</target>
-		            <parameters>true</parameters>
-		            <forceJavacCompilerUse>true</forceJavacCompilerUse>
-		            <fork>true</fork>
-		            <compilerArgs>
-		                <arg>-parameters</arg>
-		            </compilerArgs>
-		        </configuration>
-		    </plugin>
+			<!-- Empaqueta la aplicacion en un solo jar -->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.mk.mnx.StartUpService</mainClass>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+							<mainClass>com.mk.mnx.StartUpService</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+					<parameters>true</parameters>
+					<forceJavacCompilerUse>true</forceJavacCompilerUse>
+					<fork>true</fork>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>
