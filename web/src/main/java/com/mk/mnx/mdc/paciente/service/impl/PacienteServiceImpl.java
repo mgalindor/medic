@@ -173,7 +173,7 @@ public class PacienteServiceImpl  implements PacienteService{
 				errors.add("El campo es IVSA requerido");
 			}
 			if( antecedentesGinecoObstetra.getNumParejas() == null) {
-				errors.add("El campo es Número de parejas requerido");
+				errors.add("El campo es Numero de parejas requerido");
 			}
 			if( antecedentesGinecoObstetra.getFum() == null) {
 				errors.add("El campo es FUM requerido");
@@ -191,7 +191,7 @@ public class PacienteServiceImpl  implements PacienteService{
 				errors.add("El campo es A requerido");
 			}
 			if( StringUtils.isBlank( antecedentesGinecoObstetra.getMetodoAnticonceptivo())) {
-				errors.add("El campo es Método Anticonceptivo requerido");
+				errors.add("El campo es Metodo Anticonceptivo requerido");
 			}
 			if( antecedentesGinecoObstetra.getDismenorrea() == null) {
 				errors.add("El campo es Dismenorrea requerido");
