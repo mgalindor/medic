@@ -44,6 +44,7 @@ public class PacienteServiceImpl  implements PacienteService{
 		paciente.getDatosAuditoria().setCreacion(new Date());
 		paciente.getDatosAuditoria().setActive(true);
 		paciente.getDatosAuditoria().setIdUsuarioCreacion(currentUser);
+		paciente.getDatosAuditoria().addModificado(new FootPrint(currentUser, new Date(),EnuTipoCambio.CREAR_PACIENTE));
 		
 		paciente.setHistoriaClinica(null);
 		pacienteRepository.insert(paciente);

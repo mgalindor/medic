@@ -31,6 +31,22 @@ public class Nota  extends BaseModel{
 	
 	private DatosAuditoria datosAuditoria;
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getIdPaciente() {
+		return idPaciente;
+	}
+
+	public void setIdPaciente(String idPaciente) {
+		this.idPaciente = idPaciente;
+	}
+
 	public String getPadecimiento() {
 		return padecimiento;
 	}
@@ -86,13 +102,13 @@ public class Nota  extends BaseModel{
 	public void setNotas(String notas) {
 		this.notas = notas;
 	}
-	
+
 	public DatosAuditoria getDatosAuditoria() {
 		return datosAuditoria;
 	}
-	
+
 	public void setDatosAuditoria(DatosAuditoria datosAuditoria) {
 		this.datosAuditoria = datosAuditoria;
 	}
-	
+
 }

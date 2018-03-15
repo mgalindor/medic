@@ -73,7 +73,7 @@ public class PacienteController extends BaseRestController {
 	}
 	
 	@DeleteMapping
-	@AccessValidation(roles = {  EnuRole.MEDICO })
+	@AccessValidation(roles = {  EnuRole.ADMIN })
 	public void borraPaciente( @RequestBody Paciente paciente ) {
 		 pacienteService.borraPaciente(paciente, getUser());
 	}
