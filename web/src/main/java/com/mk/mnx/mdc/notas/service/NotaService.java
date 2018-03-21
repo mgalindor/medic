@@ -16,4 +16,6 @@ public interface NotaService {
 
 	void borrarNota(String idNota, String currentUser);
 
+	Nota buscaNotaPorIndice(String idPaciente, Integer index);
+
 }

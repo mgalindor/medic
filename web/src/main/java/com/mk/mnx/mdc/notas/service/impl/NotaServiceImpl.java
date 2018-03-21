@@ -14,6 +14,7 @@ import com.mk.mnx.mdc.model.domain.FootPrint;
 import com.mk.mnx.mdc.model.domain.Nota;
 import com.mk.mnx.mdc.model.domain.Paciente;
 import com.mk.mnx.mdc.model.states.EnuTipoCambio;
+import com.mk.mnx.mdc.notas.repository.NotaCustomRepository;
 import com.mk.mnx.mdc.notas.repository.NotaRepository;
 import com.mk.mnx.mdc.notas.service.NotaService;
 import com.mk.mnx.mdc.paciente.repository.PacienteRepository;
@@ -23,6 +24,9 @@ public class NotaServiceImpl extends BaseService implements NotaService {
 
 	@Autowired
 	private NotaRepository notaRepository;
+	
+	@Autowired
+	private NotaCustomRepository notaCustomRepository;
 	
 	@Autowired
 	private PacienteRepository pacienteRepository;
@@ -59,7 +63,13 @@ public class NotaServiceImpl extends BaseService implements NotaService {
 	
 	@Override
 	public List<Nota> buscaNotasPorPaciente(String idPaciente ) {
-		return null;
+		return notaCustomRepository.getNotaOfUserByIdUSuario(idPaciente);
+	}
+	
+	@Override
+	public Nota buscaNotaPorIndice(String idPaciente , Integer index) {
+		Nota aux = notaCustomRepository.getNotaOfUserByIndex(idPaciente, index);
+		return aux;
 	}
 	
 	@Override
