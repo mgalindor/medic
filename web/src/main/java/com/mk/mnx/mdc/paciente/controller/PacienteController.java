@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mk.mnx.infr.controller.BaseRestController;
 import com.mk.mnx.mdc.model.domain.HistoriaClinica;
+import com.mk.mnx.mdc.model.domain.Nota;
 import com.mk.mnx.mdc.model.domain.Paciente;
 import com.mk.mnx.mdc.model.states.EnuRole;
 import com.mk.mnx.mdc.model.states.EnuSexo;
+import com.mk.mnx.mdc.notas.service.NotaService;
 import com.mk.mnx.mdc.paciente.service.PacienteService;
 import com.mk.mnx.mdc.support.annotation.AccessValidation;
 
@@ -28,6 +30,9 @@ public class PacienteController extends BaseRestController {
 	
 	@Autowired
 	private PacienteService pacienteService;
+	
+	@Autowired
+	private NotaService notaService;
 	
 	@PostMapping
 	@AccessValidation(roles = {  EnuRole.MEDICO })
@@ -73,9 +78,21 @@ public class PacienteController extends BaseRestController {
 	}
 	
 	@DeleteMapping
-	@AccessValidation(roles = {  EnuRole.MEDICO })
+	@AccessValidation(roles = {  EnuRole.ADMIN })
 	public void borraPaciente( @RequestBody Paciente paciente ) {
 		 pacienteService.borraPaciente(paciente, getUser());
+	}
+	
+	@GetMapping("/{idPaciente}/nota" )
+	@AccessValidation(roles = {  EnuRole.MEDICO })
+	public List<Nota> buscaNotasDelPaciente(@PathVariable("idPaciente") String idPaciente ) {
+		return notaService.buscaNotasPorPaciente(idPaciente);
+	}
+	
+	@GetMapping("/{idPaciente}/nota/{index}" )
+	@AccessValidation(roles = {  EnuRole.MEDICO })
+	public Nota buscaNotasDelPaciente(@PathVariable("idPaciente") String idPaciente,@PathVariable(value="index",required=true) Integer index ) {
+		return notaService.buscaNotaPorIndice(idPaciente,index);
 	}
 	
 	@PostMapping("/{idPaciente}/historia")
